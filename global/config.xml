@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="com.ceip.carnegie" android-versionCode="30100" ios-CFBundleVersion="1" version="3.1.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>global</name>
+    <name>Carnegie</name>
     <description>
         Carnegie global feed reader
     </description>
@@ -8,6 +8,30 @@
         Kirk Elliott
     </author>
     <content src="index.html" />
+    <preference name="FadeSplashScreen" value="true" />
+    <preference name="show-splash-screen-spinner" value="true" />
+    <preference name="ShowSplashScreenSpinner" value="true" />
+    <preference name="auto-hide-splash-screen" value="false" />
+    <preference name="fade-splash-screen" value="true" />
+    <preference name="AutoHideSplashScreen" value="false" />
+    <preference name="SplashScreen" value="screen" />
+    <preference name="SplashScreenDelay" value="100000" />
+
+    <platform name="android">
+        <icon src="res/android/ldpi.png" density="ldpi" />
+        <icon src="res/android/mdpi.png" density="mdpi" />
+        <icon src="res/android/hdpi.png" density="hdpi" />
+        <icon src="res/android/xhdpi.png" density="xhdpi" />
+        <icon src="res/android/xxhdpi.png" density="xxhdpi" />
+        <icon src="res/android/xxxhdpi.png" density="xxxhdpi" />
+
+        <splash src="res/screen/android/splash-port-hdpi.png" density="port-hdpi"/>
+        <splash src="res/screen/android/splash-port-ldpi.png" density="port-ldpi"/>
+        <splash src="res/screen/android/splash-port-mdpi.png" density="port-mdpi"/>
+        <splash src="res/screen/android/splash-port-xhdpi.png" density="port-xhdpi"/>
+        <splash src="res/screen/android/splash-port-xxhdpi.png" density="port-xxhdpi"/>
+        <splash src="res/screen/android/splash-port-xxxhdpi.png" density="port-xxxhdpi"/>
+    </platform>
 
     <platform name="ios">
         <icon src="res/ios/icon-60@3x.png" width="180" height="180" />
