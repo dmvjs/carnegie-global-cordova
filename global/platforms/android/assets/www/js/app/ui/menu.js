@@ -7,10 +7,12 @@ var config = require('../config')
 	, storyList = require('./storyList')
 	, doesFileExist = require('../../io/doesFileExist')
 	, getFileContents = require('../../io/getFileContents')
+	, toLocal = require('./getLocalizedString')
+	, localStrings = require('./localizedStrings')
 	, primary = false;
 
 function friendlyDate (obj) {
-  return obj.friendlyPubDate !== undefined ? obj.friendlyPubDate : obj.lastBuildDate;
+    return obj.friendlyPubDate !== undefined ? obj.friendlyPubDate : obj.lastBuildDate;
 }
 
 (function init() {
@@ -43,7 +45,7 @@ function friendlyDate (obj) {
 				})
 				, sub = $('<div/>', {
 					addClass: 'sub'
-					, text: 'Not yet downloaded'
+					, text: toLocal(localStrings.notYetDownloaded)
 					, 'data-url': el.filename || el.url.split('/').pop().split('.').shift() + '.json'
 				})
 				, container = $('<div/>', {
@@ -70,7 +72,7 @@ function friendlyDate (obj) {
 				doesFileExist(filename).then(function () {
 					getFileContents(filename).then(function (contents) {
 						var obj = (JSON.parse(contents.target._result));
-						update(filename, 'Updated: ' + friendlyDate(obj));
+						update(filename, toLocal(localStrings.updated) + " " + friendlyDate(obj));
 						box.addClass('checked');
 					}, function (e){console.log(e)});
 				}, function (e){console.log(e)});
@@ -173,7 +175,7 @@ function get(id, loadOnly, $el) {
 	access.get(id, loadOnly).then(function (contents) {
 		var obj = (JSON.parse(contents.target._result));
 
-		update(filename, 'Updated: ' + friendlyDate(obj));
+		update(filename, toLocal(localStrings.updated) + " " + friendlyDate(obj));
 		if (!loadOnly) {
 			storyList.show(obj).then(function () {
         header.showStoryList();
@@ -215,7 +217,7 @@ function remove(id) {
 }
 
 $(document).on('access.refresh', function (e, obj, filename) {
-  update(filename, 'Updated: ' + friendlyDate(obj));
+  update(filename, toLocal(localStrings.updated) + " " + friendlyDate(obj));
 });
 
 module.exports = {

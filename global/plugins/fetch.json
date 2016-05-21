@@ -59,5 +59,18 @@
             "url": "https://github.com/apache/cordova-plugin-globalization",
             "subdir": "."
         }
+    },
+    "cordova-plugin-sim": {
+        "source": {
+            "type": "git",
+            "url": "https://github.com/pbakondy/cordova-plugin-sim",
+            "subdir": "."
+        }
+    },
+    "br.com.dtmtec.plugins.carrier": {
+        "source": {
+            "type": "registry",
+            "id": "br.com.dtmtec.plugins.carrier"
+        }
     }
 }

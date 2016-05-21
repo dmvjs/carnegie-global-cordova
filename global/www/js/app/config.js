@@ -1,92 +1,112 @@
 /*global module, require*/
+var analyticsConfig = require('./analyticsConfig')
+	, toLocal = require('./ui/getLocalizedString')
+	, localStrings = require('./ui/localizedStrings')
+	, useDefaultFeeds = window.__languageForCarnegie === undefined && window.__localCenter === undefined
+	, useArabicUI = window.__languageForCarnegie === "ar"
+	, useChineseUI = window.__languageForCarnegie === "zh"
+	, useRussianUI = window.__languageForCarnegie === "ru"
+	, useMoscowCenter = window.__localCenter === "moscow"
+	, useBeijingCenter = window.__localCenter === "beijing"
+	, useBeirutCenter = window.__localCenter === "beirut"
+	, useBrusselsCenter = window.__localCenter === "brussels"
+	, useNewDelhiCenter = window.__localCenter === "newDelhi";
 
 module.exports = {
 	fs: void 0
 	, appName: 'Carnegie'
-	, track: true
-	, trackId: 'UA-31877-29'
+	, track: analyticsConfig.track
+	, trackId: analyticsConfig.trackId
 	, folder: 'com.ceip.carnegie'
 	, storyFontSize: 1.0
 	, connectionMessage: 'No network connection detected'
-	, menuMessage: 'Not yet downloaded'
+	, menuMessage: toLocal(localStrings.notYetDownloaded)
 	, missingImage: 'http://carnegieendowment.org/app-img-not-avail.png'
 	, missingImageRef: void 0
 	, menu: [{
 		title: ''
-		, sub: 'Read Offline'
+		, sub: toLocal(localStrings.readOffline)
 		, feeds: [{
 			url: 'http://carnegieendowment.org/rss/solr/?fa=AppGlobalJson'
-			, name: 'Latest Analysis'
+			, name: toLocal(localStrings.latestAnalysis)
 			, filename: 'mobile-global.json'
 			, type: 'json'
-			, required: true
+			, required: useDefaultFeeds
 		}, {
 			url: 'http://carnegieendowment.org/rss/feeds/mobile-carnegie-top5.json.txt'
-			, name: 'Most Popular'
+			, name: toLocal(localStrings.mostPopular)
 			, filename: 'top5.json'
 			, type: 'json'
 		}]
 	}, {
-		title: 'Languages'
+		title: toLocal(localStrings.languages)
 		, feeds: [{
 			url: 'http://carnegieendowment.org/rss/solr/?fa=AppGlobalJson'
-			, name: 'English'
+			, name: toLocal(localStrings.english)
 			, filename: 'mobile-global.json'
 			, type: 'json'
-			, required: true
+			, required: useDefaultFeeds
 		}, {
 			url: 'http://carnegieendowment.org/rss/solr/?fa=AppGlobalJson&lang=ru'
 			, name: 'Русский'
 			, type: 'json'
 			, filename: 'russian-json.json'
+			, required: useRussianUI
 		}, {
 			url: 'http://carnegieendowment.org/rss/solr/?fa=AppGlobalJson&lang=zh'
 			, name: '中文'
 			, type: 'json'
 			, filename: 'china-json.json'
+			, required: useChineseUI
 		}, {
 			url: 'http://carnegieendowment.org/rss/solr/?fa=AppGlobalJson&lang=ar'
 			, name: 'عربي'
 			, dir: 'rtl'
 			, type: 'json'
 			, filename: 'arabic-json.json'
+			, required: useArabicUI
 		}]
 	}, {
-		title: 'Global Centers'
+		title: toLocal(localStrings.globalCenters)
 		, feeds: [{
 			url: 'http://carnegieendowment.org/rss/solr/?fa=AppGlobalJson&center=beijing'
-			, name: 'Beijing'
+			, name: toLocal(localStrings.beijing)
 			, type: 'json'
 			, filename: 'beijing-json.json'
+			, required: useBeijingCenter
 		}, {
 			url: 'http://carnegieendowment.org/rss/solr/?fa=AppGlobalJson&center=beirut'
-			, name: 'Beirut'
+			, name: toLocal(localStrings.beirut)
 			, type: 'json'
 			, filename: 'beirut-json.json'
+			, required: useBeirutCenter
 		}, {
 			url: 'http://carnegieendowment.org/rss/solr/?fa=AppGlobalJson&center=brussels'
-			, name: 'Brussels'
+			, name: toLocal(localStrings.brussels)
 			, type: 'json'
 			, filename: 'brussels-json.json'
+			, required: useBrusselsCenter
 		}, {
 			url: 'http://carnegieendowment.org/rss/solr/?fa=AppGlobalJson&center=moscow'
-			, name: 'Moscow'
+			, name: toLocal(localStrings.moscow)
 			, type: 'json'
 			, filename: 'moscow-json.json'
+			, required: useMoscowCenter
 		}, {
 			url: 'http://carnegieendowment.org/rss/solr/?fa=AppGlobalJson&center=india'
-			, name: 'New Delhi'
+			, name: toLocal(localStrings.newDelhi)
 			, type: 'json'
 			, filename: 'newdelhi-json.json'
+			, required: useNewDelhiCenter
 		}, {
 			url: 'http://carnegieendowment.org/rss/solr/?fa=AppGlobalJson'
-			, name: 'Washington D.C.'
+			, name: toLocal(localStrings.washingtonDC)
 			, filename: 'mobile-global.json'
 			, type: 'json'
-			, required: true
+			, required: useDefaultFeeds
 		}]
 	}, {
-		title: 'Blogs'
+		title: toLocal(localStrings.blogs)
 		, links: [{
 			url: 'http://carnegieendowment.org/sada/'
 			, name: 'Sada'
@@ -98,49 +118,49 @@ module.exports = {
 			, name: 'Syria in Crisis'
 		}]
 	}, {
-		title: 'Global Resources'
+		title: toLocal(localStrings.resources)
 		, links: [{
 			url: 'http://carnegieendowment.org/topic/'
-			, name: 'Issues'
+			, name: toLocal(localStrings.issues)
 		}, {
 			url: 'http://carnegieendowment.org/regions/'
-			, name: 'Regions'
+			, name: toLocal(localStrings.regions)
 		}, {
 			url: 'http://carnegieendowment.org/experts/'
-			, name: 'Experts'
+			, name: toLocal(localStrings.experts)
 		}, {
 			url: 'http://carnegieendowment.org/publications/'
-			, name: 'Publications'
+			, name: toLocal(localStrings.publications)
 		}, {
 			url: 'http://carnegieendowment.org/events/'
-			, name: 'Events'
+			, name: toLocal(localStrings.events)
 		}, {
 			url: 'http://carnegieendowment.org/programs/'
-			, name: 'Programs'
+			, name: toLocal(localStrings.programs)
 		}, {
 			url: 'http://carnegieendowment.org/video/'
-			, name: 'Carnegie Video'
+			, name: toLocal(localStrings.carnegieVideo)
 		}, {
 			url: 'http://carnegieendowment.org/infographics'
-			, name: 'Infographics'
+			, name: toLocal(localStrings.infographics)
 		}]
 	}, {
-		title: 'Explore'
+		title: toLocal(localStrings.explore)
 		, links: [{
 			url: 'http://carnegieendowment.org/resources/?fa=register'
-			, name: 'Subscribe'
+			, name: toLocal(localStrings.subscribe)
 		}, {
 			url: 'http://carnegieendowment.org/about/'
-			, name: 'About Us'
+			, name: toLocal(localStrings.aboutUs)
 		}, {
 			url: 'http://carnegieendowment.org/about/development/'
-			, name: 'Support Carnegie'
+			, name: toLocal(localStrings.supportCarnegie)
 		}, {
 			url: 'http://carnegieendowment.org/about/?fa=contact'
-			, name: 'Help Desk'
+			, name: toLocal(localStrings.helpDesk)
 		}, {
 			url: 'http://carnegieendowment.org/about/index.cfm?fa=privacy'
-			, name: 'Privacy Statement'
+			, name: toLocal(localStrings.privacyStatement)
 		}]
 	}
 	]

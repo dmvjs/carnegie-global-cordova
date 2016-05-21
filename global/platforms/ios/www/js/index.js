@@ -17,7 +17,7 @@
  * under the License.
  */
 
-var config = require('./app/config');
+var analyticsConfig = require('./app/analyticsConfig');
 
 module.exports = (function () {
 		document.addEventListener('deviceready', appReady, false);
@@ -31,22 +31,73 @@ module.exports = (function () {
 			//}, 6000)
 		}
 
+		function startApp () {
+			require('./init');
+		}
+
+		function getCountryCodeFromSim () {
+			window.plugins.carrier.getCarrierInfo(
+				function (data) {
+					var testing = false;
+					if (testing) {
+						window.__localCenter = "moscow"
+					} else
+					// only use SIM-based country lookup when no previous laguage override exists (English)
+					if (window.__languageForCarnegie === undefined && data && data["countryCode"] !== undefined) {
+						var cc = data["countryCode"];
+						var countries = {
+							moscow: ["RU", "UA", "BY", "MD", "AZ", "GE", "EE", "LV", "LT"],
+							beijing: ["CN", "HK", "MO", "SG", "TW", "JP", "KP", "KR", "MM", "LA", "TH", "KH", "VN", "MY", "PH", "ID"],
+							beirut: ["BH", "IR", "IQ", "IL", "JO", "LB", "PS", "SA", "SY", "TR", "AE", "YE", "DZ", "EG", "LY", "MR", "MA", "SD", "TN", "ML"],
+							brussels: ["FR", "DE", "GB", "IE", "ES", "PT", "BE", "NL", "DK", "NO", "SE", "FI", "PL", "CZ", "AT", "IT", "HU", "GR", "SK"],
+							newDelhi: ["IN", "PK", "AF", "BD", "NP", "LK"]
+						};
+						for (var key in countries) {
+							if (countries.hasOwnProperty(key)) {
+								if (countries[key].indexOf(cc) > -1) {
+									window.__localCenter = key
+								}
+							}
+						}
+					}
+					analytics.trackEvent('Country Code', 'Load', data && data['countryCode'] || "undefined", 10);
+					startApp()
+				}, function () {
+					analytics.trackEvent('Country Code', 'Fail', "No country code detected from SIM", 10);
+					startApp()
+				}
+			);
+		}
+
 		function appInit () {
 			$(function () {
-				if (config.track && analytics) {
-					analytics.startTrackerWithId(config.trackId);
+				if (analyticsConfig.track && analytics) {
+					analytics.startTrackerWithId(analyticsConfig.trackId);
 					analytics.trackEvent('Init', 'Load', 'App Started', 10);
 				}
+
 				navigator.globalization.getPreferredLanguage(
 					function (language) {
+						var body = $(window.document.body);
 						analytics.trackEvent('Language', 'Load', language.value, 10);
-						alert('language: ' + language.value + '\n');
-						require('./init');
+						if (language && language.value) {
+							if (language.value.indexOf("ar") > -1) {
+								window.__languageForCarnegie = "ar";
+								body.addClass('arabic-ui');
+							} else if (language.value.indexOf("ru") > -1) {
+								window.__languageForCarnegie = "ru";
+								body.addClass('russian-ui');
+							} else if (language.value.indexOf("zh") > -1) {
+								window.__languageForCarnegie = "zh";
+								body.addClass('chinese-ui');
+							}
+						}
+						getCountryCodeFromSim();
 					},
 					function () {
-						analytics.trackEvent('Language', 'Fail', language.value, 10);
-						alert('Error getting language\n');
-						require('./init');
+						alert("no language");
+						analytics.trackEvent('Language', 'Fail', "No preferred language detected", 10);
+						getCountryCodeFromSim();
 					}
 				);
 			});

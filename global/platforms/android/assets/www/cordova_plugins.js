@@ -237,6 +237,13 @@ module.exports = [
         "clobbers": [
             "navigator.splashscreen"
         ]
+    },
+    {
+        "file": "plugins/br.com.dtmtec.plugins.carrier/www/carrier.js",
+        "id": "br.com.dtmtec.plugins.carrier.Carrier",
+        "clobbers": [
+            "window.plugins.carrier"
+        ]
     }
 ];
 module.exports.metadata = 
@@ -251,7 +258,8 @@ module.exports.metadata =
     "org.apache.cordova.file-transfer": "0.5.0",
     "org.apache.cordova.inappbrowser": "0.6.0",
     "org.apache.cordova.network-information": "0.2.15",
-    "org.apache.cordova.splashscreen": "1.0.0"
+    "org.apache.cordova.splashscreen": "1.0.0",
+    "br.com.dtmtec.plugins.carrier": "1.0.0"
 }
 // BOTTOM OF METADATA
 });

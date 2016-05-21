@@ -70,6 +70,12 @@
                             "xml": false,
                             "count": 2
                         }
+                    ],
+                    "CoreTelephony.framework": [
+                        {
+                            "xml": false,
+                            "count": 1
+                        }
                     ]
                 }
             },
@@ -115,6 +121,10 @@
                         {
                             "xml": "<feature name=\"SplashScreen\"><param name=\"ios-package\" value=\"CDVSplashScreen\" /><param name=\"onload\" value=\"true\" /></feature>",
                             "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"Carrier\"><param name=\"ios-package\" value=\"Carrier\" /></feature>",
+                            "count": 1
                         }
                     ]
                 }
@@ -150,6 +160,9 @@
             "PACKAGE_NAME": "com.ceip.carnegie"
         },
         "org.apache.cordova.splashscreen": {
+            "PACKAGE_NAME": "com.ceip.carnegie"
+        },
+        "br.com.dtmtec.plugins.carrier": {
             "PACKAGE_NAME": "com.ceip.carnegie"
         }
     },

@@ -17,7 +17,7 @@
  * under the License.
  */
 
-var config = require('./app/config');
+var analyticsConfig = require('./app/analyticsConfig');
 
 module.exports = (function () {
 		document.addEventListener('deviceready', appReady, false);
@@ -31,22 +31,57 @@ module.exports = (function () {
 			//}, 6000)
 		}
 
+		function startApp () {
+			require('./init');
+		}
+
+		function getCountryCodeFromSim () {
+			debugger;
+			window.plugins.carrier.getCarrierInfo(
+				function (data) {
+					//alert(data['carrierName']);
+					//alert(data['countryCode']);
+					//alert(data['mcc']);
+					//alert(data['mnc']);
+					analytics.trackEvent('Country Code', 'Load', data['countryCode'], 10);
+					startApp()
+				}, function () {
+					//alert('Error!');
+					analytics.trackEvent('Country Code', 'Fail', "No country code detected from SIM", 10);
+					startApp()
+				}
+			);
+		}
+
 		function appInit () {
 			$(function () {
-				if (config.track && analytics) {
-					analytics.startTrackerWithId(config.trackId);
+				if (analyticsConfig.track && analytics) {
+					analytics.startTrackerWithId(analyticsConfig.trackId);
 					analytics.trackEvent('Init', 'Load', 'App Started', 10);
 				}
+
 				navigator.globalization.getPreferredLanguage(
 					function (language) {
+						var body = $(window.document.body);
 						analytics.trackEvent('Language', 'Load', language.value, 10);
-						alert('language: ' + language.value + '\n');
-						require('./init');
+						if (language && language.value) {
+							if (language.value.indexOf("ar") > -1) {
+								window.__languageForCarnegie = "ar";
+								body.addClass('arabic-ui');
+							} else if (language.value.indexOf("ru") > -1) {
+								window.__languageForCarnegie = "ru";
+								body.addClass('russian-ui');
+							} else if (language.value.indexOf("zh") > -1) {
+								window.__languageForCarnegie = "zh";
+								body.addClass('chinese-ui');
+							}
+						}
+						getCountryCodeFromSim();
 					},
 					function () {
-						analytics.trackEvent('Language', 'Fail', language.value, 10);
-						alert('Error getting language\n');
-						require('./init');
+						alert("no language");
+						analytics.trackEvent('Language', 'Fail', "No preferred language detected", 10);
+						getCountryCodeFromSim();
 					}
 				);
 			});

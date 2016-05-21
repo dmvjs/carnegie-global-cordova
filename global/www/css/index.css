@@ -84,6 +84,10 @@ html, body {
     background-color: #001c3d;
 }
 
+body.arabic-ui {
+    direction: rtl;
+}
+
 /* header styles */
 
 header {
@@ -97,7 +101,7 @@ header {
 }
 
 header.stay {
-    background-image: url('../img/header-main.png');
+    background-image: url('../img/header-story.png');
     background-size: auto 44px;
     background-repeat: no-repeat;
 }
@@ -109,10 +113,11 @@ header.stay {
 header .story-list,
 header .menu {
     height: 44px;
-    background: url('../img/header-main.png');
+    background: url('../img/header-story.png');
     background-color: #001c3d;
     background-size: auto 44px;
     background-repeat: no-repeat;
+    background-position: center;
 }
 
 .tablet header .story-list,
@@ -470,6 +475,28 @@ section.story-list li:first-of-type .story-image {
     width: 100%;
     height: auto;
     margin: 0;
+}
+
+.arabic-ui section.menu .menu-item-box {
+    float: right;
+}
+
+.arabic-ui section.menu .menu-item-box .label,
+.arabic-ui section.menu .menu-item-box .sub {
+    margin-left: 0;
+    margin-right: 8px;
+}
+
+.arabic-ui section.menu .check {
+    float: left;
+}
+
+.arabic-ui section.menu .section-header .title {
+    float: right;
+}
+
+.arabic-ui section.menu .section-header .sub {
+    float: left;
 }
 
 section.story-list .story-image img {

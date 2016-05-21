@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		040969016BDA40C2AA853B61 /* CDVFile.m in Sources */ = {isa = PBXBuildFile; fileRef = AD64DAF67CE74470BA430A69 /* CDVFile.m */; };
 		0DC79A05F7B24B81A296C109 /* CDVNotification.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 503B60FEB4BC4BB7A28B6197 /* CDVNotification.bundle */; };
@@ -34,7 +33,9 @@
 		30FC414916E50CA1004E6F35 /* icon-72@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 30FC414816E50CA1004E6F35 /* icon-72@2x.png */; };
 		3318CCA0CE4A4CAEB87DA863 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5287F938C17E4081A4EF2011 /* MessageUI.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		3F4B37ABC520451197327D9A /* CDVAssetLibraryFilesystem.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A61F2D9702646CFB3C232C1 /* CDVAssetLibraryFilesystem.m */; };
+		414800785F3F460F843BDB37 /* Carrier.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DA4630012E34754A52DA526 /* Carrier.m */; };
 		4BB2ED9F09884FAD8ADCAF33 /* CDVSplashScreen.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BBC7348E7584B47BBA9EC1C /* CDVSplashScreen.m */; };
+		4F44CD7636044A189E9B72B4 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B4B2D78759184D01A7412F6E /* CoreTelephony.framework */; };
 		5B1594DD16A7569C00FEF299 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B1594DC16A7569C00FEF299 /* AssetsLibrary.framework */; };
 		5FBCBC3DC2D5470BBE5B28A3 /* CDVLocalFilesystem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B114B0681AB4EF1B4301188 /* CDVLocalFilesystem.m */; };
 		63AA597D1B8B4C93946C5686 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0FEA29E462B843139A126CBB /* SystemConfiguration.framework */; };
@@ -124,11 +125,13 @@
 		59F33A572E8440E2A0943F5D /* libz.dylib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		5B114B0681AB4EF1B4301188 /* CDVLocalFilesystem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDVLocalFilesystem.m; path = org.apache.cordova.file/CDVLocalFilesystem.m; sourceTree = "<group>"; };
 		5B1594DC16A7569C00FEF299 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
+		6602319297B148509ED8B5F1 /* Carrier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Carrier.h; path = br.com.dtmtec.plugins.carrier/Carrier.h; sourceTree = "<group>"; };
 		66E1FE728EC54DE3B25F7B7C /* CDVConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDVConnection.h; path = "org.apache.cordova.network-information/CDVConnection.h"; sourceTree = "<group>"; };
 		6B0DF21AF8BF425989421FE9 /* Social.framework */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		6ED6546CE015477F837F3384 /* SocialSharing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SocialSharing.h; path = "nl.x-services.plugins.socialsharing/SocialSharing.h"; sourceTree = "<group>"; };
 		7760BEFDDE2E46B8A65295B8 /* GAIEcommercePromotion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GAIEcommercePromotion.h; path = com.danielcwilson.plugins.googleanalytics/GAIEcommercePromotion.h; sourceTree = "<group>"; };
 		79119D2908EB47D89DD9B34F /* CDVFileTransfer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDVFileTransfer.m; path = "org.apache.cordova.file-transfer/CDVFileTransfer.m"; sourceTree = "<group>"; };
+		7DA4630012E34754A52DA526 /* Carrier.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Carrier.m; path = br.com.dtmtec.plugins.carrier/Carrier.m; sourceTree = "<group>"; };
 		7E7966D41810823500FA85AD /* icon-40.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-40.png"; sourceTree = "<group>"; };
 		7E7966D51810823500FA85AD /* icon-40@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-40@2x.png"; sourceTree = "<group>"; };
 		7E7966D61810823500FA85AD /* icon-50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon-50.png"; sourceTree = "<group>"; };
@@ -151,6 +154,7 @@
 		A20E3981A2464CFB9B25F91A /* UniversalAnalyticsPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UniversalAnalyticsPlugin.h; path = com.danielcwilson.plugins.googleanalytics/UniversalAnalyticsPlugin.h; sourceTree = "<group>"; };
 		AC8B2E04CAD04FF8A593F8E1 /* CDVReachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDVReachability.m; path = "org.apache.cordova.network-information/CDVReachability.m"; sourceTree = "<group>"; };
 		AD64DAF67CE74470BA430A69 /* CDVFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDVFile.m; path = org.apache.cordova.file/CDVFile.m; sourceTree = "<group>"; };
+		B4B2D78759184D01A7412F6E /* CoreTelephony.framework */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		B679EA1BF1714E16B144F00E /* UniversalAnalyticsPlugin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UniversalAnalyticsPlugin.m; path = com.danielcwilson.plugins.googleanalytics/UniversalAnalyticsPlugin.m; sourceTree = "<group>"; };
 		BABA080F15D34BFA8D17115C /* GAITrackedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GAITrackedViewController.h; path = com.danielcwilson.plugins.googleanalytics/GAITrackedViewController.h; sourceTree = "<group>"; };
 		C1404C276A0D4CDA8868F64B /* CDVGlobalization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDVGlobalization.h; path = "cordova-plugin-globalization/CDVGlobalization.h"; sourceTree = "<group>"; };
@@ -189,6 +193,7 @@
 				70E3C3D7BFBC46F092527D4C /* Social.framework in Frameworks */,
 				3318CCA0CE4A4CAEB87DA863 /* MessageUI.framework in Frameworks */,
 				BF851DA39078407AAFA0A05B /* AudioToolbox.framework in Frameworks */,
+				4F44CD7636044A189E9B72B4 /* CoreTelephony.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -270,6 +275,7 @@
 				6B0DF21AF8BF425989421FE9 /* Social.framework */,
 				5287F938C17E4081A4EF2011 /* MessageUI.framework */,
 				C439843552894E6F86850792 /* AudioToolbox.framework */,
+				B4B2D78759184D01A7412F6E /* CoreTelephony.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -321,6 +327,8 @@
 				162EF996E97D4F22B6E77DB7 /* CDVReachability.h */,
 				9BBC7348E7584B47BBA9EC1C /* CDVSplashScreen.m */,
 				DC9C886F46664C95824FC4D4 /* CDVSplashScreen.h */,
+				7DA4630012E34754A52DA526 /* Carrier.m */,
+				6602319297B148509ED8B5F1 /* Carrier.h */,
 			);
 			name = Plugins;
 			path = Carnegie/Plugins;
@@ -414,9 +422,6 @@
 				French,
 				German,
 				en,
-				es,
-				de,
-				se,
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
 			projectDirPath = "";
@@ -519,6 +524,7 @@
 				F84C6EEB93A04419A3195DB4 /* CDVConnection.m in Sources */,
 				F934F8606F4F4E5E9260F1FD /* CDVReachability.m in Sources */,
 				4BB2ED9F09884FAD8ADCAF33 /* CDVSplashScreen.m in Sources */,
+				414800785F3F460F843BDB37 /* Carrier.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -539,6 +545,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				COPY_PHASE_STRIP = NO;
+				ENABLE_BITCODE = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -574,6 +581,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				COPY_PHASE_STRIP = YES;
+				ENABLE_BITCODE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Carnegie/Carnegie-Prefix.pch";
 				GCC_THUMB_SUPPORT = NO;

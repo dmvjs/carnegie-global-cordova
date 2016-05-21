@@ -5,6 +5,8 @@ var config = require('../config')
 	, notify = require('../../util/notify')
   , story = require('./story')
   , refresh = require('./refresh')
+    , toLocal = require('./getLocalizedString')
+    , localStrings = require('./localizedStrings')
 	, android = device.platform.toLowerCase() === 'android'
 	, version = device.version.split('.')
 	// allow iOS devices and Android devices 4.4 and up to have pull to refresh
@@ -28,7 +30,7 @@ function show(feedObj, forceActive) {
       }).append(message)
       , topBar = $('<div/>', {
         addClass: 'top-bar'
-        , text: 'Updated: ' + (feedObj.friendlyPubDate !== undefined ? feedObj.friendlyPubDate : feedObj.lastBuildDate)
+        , text: toLocal(localStrings.updatedColon) + (feedObj.friendlyPubDate !== undefined ? feedObj.friendlyPubDate : feedObj.lastBuildDate)
       })
       , ul = $('<ul/>', {})
       , container = $('<div/>', {

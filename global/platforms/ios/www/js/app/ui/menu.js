@@ -4,13 +4,22 @@ var config = require('../config')
 	, notify = require('../../util/notify')
 	, access = require('../access')
 	, header = require('./header')
+	, getDate = require('../../util/date')
 	, storyList = require('./storyList')
 	, doesFileExist = require('../../io/doesFileExist')
 	, getFileContents = require('../../io/getFileContents')
+	, toLocal = require('./getLocalizedString')
+	, localStrings = require('./localizedStrings')
 	, primary = false;
 
 function friendlyDate (obj) {
-  return obj.friendlyPubDate !== undefined ? obj.friendlyPubDate : obj.lastBuildDate;
+	if (obj.lastBuildDate !== undefined) {
+		var localDate = getDate(obj.lastBuildDate);
+		if (localDate !== undefined) {
+			return localDate;
+		}
+	}
+    return obj.friendlyPubDate !== undefined ? obj.friendlyPubDate : obj.lastBuildDate;
 }
 
 (function init() {
@@ -43,7 +52,7 @@ function friendlyDate (obj) {
 				})
 				, sub = $('<div/>', {
 					addClass: 'sub'
-					, text: 'Not yet downloaded'
+					, text: toLocal(localStrings.notYetDownloaded)
 					, 'data-url': el.filename || el.url.split('/').pop().split('.').shift() + '.json'
 				})
 				, container = $('<div/>', {
@@ -70,7 +79,7 @@ function friendlyDate (obj) {
 				doesFileExist(filename).then(function () {
 					getFileContents(filename).then(function (contents) {
 						var obj = (JSON.parse(contents.target._result));
-						update(filename, 'Updated: ' + friendlyDate(obj));
+						update(filename, toLocal(localStrings.updatedColon) + friendlyDate(obj));
 						box.addClass('checked');
 					}, function (e){console.log(e)});
 				}, function (e){console.log(e)});
@@ -135,6 +144,7 @@ function friendlyDate (obj) {
 			, index = $('section.menu li').index($(this).closest('li'));
 		e.preventDefault();
 		if (navigator.connection.type !== 'none' || $check.hasClass('checked') || $check.hasClass('required')) {
+			updateHeaderCenterImage (index);
 			get(index, false, $(this));
 			$('section.menu li.active').removeClass('active');
 			$(e.currentTarget).closest('li').addClass('active');
@@ -156,9 +166,26 @@ function friendlyDate (obj) {
 		} else {
 			notify.alert(config.connectionMessage);
 		}
-	})
+	});
 
 }());
+
+function updateHeaderCenterImage (id) {
+	var classToAdd = access.getFilenameFromId(id).split(".").shift();
+	var classes = access.getFeedsFromConfig();
+	var header = $("header");
+
+	if (!header.hasClass(classToAdd)) {
+		for (var name in classes) {
+			if (classes.hasOwnProperty(name)) {
+				header.removeClass(classes[name].filename.split(".").shift());
+			}
+		}
+		if (classToAdd !== "mobile-global") {
+			header.addClass(classToAdd);
+		}
+	}
+}
 
 function update(filename, date) {
 	var items = $('section.menu .menu-item-box .sub[data-url="' + filename + '"]');
@@ -173,7 +200,7 @@ function get(id, loadOnly, $el) {
 	access.get(id, loadOnly).then(function (contents) {
 		var obj = (JSON.parse(contents.target._result));
 
-		update(filename, 'Updated: ' + friendlyDate(obj));
+		update(filename, toLocal(localStrings.updatedColon) + friendlyDate(obj));
 		if (!loadOnly) {
 			storyList.show(obj).then(function () {
         header.showStoryList();
@@ -215,7 +242,7 @@ function remove(id) {
 }
 
 $(document).on('access.refresh', function (e, obj, filename) {
-  update(filename, 'Updated: ' + friendlyDate(obj));
+  update(filename, toLocal(localStrings.updatedColon) + friendlyDate(obj));
 });
 
 module.exports = {

@@ -99,7 +99,7 @@ function getImages(feedObject) {
   })
 }
 
-function getFeedFromConfig(id) {
+function getFeedsFromConfig () {
   var feeds = [];
   config.menu.forEach(function (item) {
     if (item.feeds) {
@@ -108,7 +108,11 @@ function getFeedFromConfig(id) {
       })
     }
   });
-  return feeds[id];
+  return feeds;
+}
+
+function getFeedFromConfig(id) {
+  return getFeedsFromConfig()[id];
 }
 
 function getFilenameFromFeed(feed) {
@@ -234,97 +238,123 @@ module.exports = {
   , getFilenameFromFeed: getFilenameFromFeed
   , removeFeed: removeFeed
   , refresh: refresh
+  , getFeedsFromConfig: getFeedsFromConfig
 };
-},{"../io/createFileWithContents":14,"../io/doesFileExist":15,"../io/downloadExternalFile":16,"../io/getFileContents":19,"../io/getFileList":21,"../io/removeFile":26,"../util/connection":28,"../util/notify":30,"./config":2,"./xmlToJson":10}],2:[function(require,module,exports){
+},{"../io/createFileWithContents":17,"../io/doesFileExist":18,"../io/downloadExternalFile":19,"../io/getFileContents":22,"../io/getFileList":24,"../io/removeFile":29,"../util/connection":31,"../util/notify":34,"./config":3,"./xmlToJson":13}],2:[function(require,module,exports){
+module.exports = {
+    track: true
+    , trackId: 'UA-31877-29'
+};
+},{}],3:[function(require,module,exports){
 /*global module, require*/
+var analyticsConfig = require('./analyticsConfig')
+	, toLocal = require('./ui/getLocalizedString')
+	, localStrings = require('./ui/localizedStrings')
+	, useDefaultFeeds = window.__languageForCarnegie === undefined && window.__localCenter === undefined
+	, useArabicUI = window.__languageForCarnegie === "ar"
+	, useChineseUI = window.__languageForCarnegie === "zh"
+	, useRussianUI = window.__languageForCarnegie === "ru"
+	, useMoscowCenter = window.__localCenter === "moscow"
+	, useBeijingCenter = window.__localCenter === "beijing"
+	, useBeirutCenter = window.__localCenter === "beirut"
+	, useBrusselsCenter = window.__localCenter === "brussels"
+	, useNewDelhiCenter = window.__localCenter === "newDelhi";
 
 module.exports = {
 	fs: void 0
 	, appName: 'Carnegie'
-	, track: true
-	, trackId: 'UA-31877-29'
+	, track: analyticsConfig.track
+	, trackId: analyticsConfig.trackId
 	, folder: 'com.ceip.carnegie'
 	, storyFontSize: 1.0
 	, connectionMessage: 'No network connection detected'
-	, menuMessage: 'Not yet downloaded'
+	, menuMessage: toLocal(localStrings.notYetDownloaded)
 	, missingImage: 'http://carnegieendowment.org/app-img-not-avail.png'
 	, missingImageRef: void 0
 	, menu: [{
 		title: ''
-		, sub: 'Read Offline'
+		, sub: toLocal(localStrings.readOffline)
 		, feeds: [{
 			url: 'http://carnegieendowment.org/rss/solr/?fa=AppGlobalJson'
-			, name: 'Latest Analysis'
+			, name: toLocal(localStrings.latestAnalysis)
 			, filename: 'mobile-global.json'
 			, type: 'json'
-			, required: true
+			, required: useDefaultFeeds
 		}, {
 			url: 'http://carnegieendowment.org/rss/feeds/mobile-carnegie-top5.json.txt'
-			, name: 'Most Popular'
+			, name: toLocal(localStrings.mostPopular)
 			, filename: 'top5.json'
 			, type: 'json'
 		}]
 	}, {
-		title: 'Languages'
+		title: toLocal(localStrings.languages)
 		, feeds: [{
 			url: 'http://carnegieendowment.org/rss/solr/?fa=AppGlobalJson'
-			, name: 'English'
+			, name: toLocal(localStrings.english)
 			, filename: 'mobile-global.json'
 			, type: 'json'
-			, required: true
+			, required: useDefaultFeeds
 		}, {
 			url: 'http://carnegieendowment.org/rss/solr/?fa=AppGlobalJson&lang=ru'
 			, name: 'Русский'
 			, type: 'json'
 			, filename: 'russian-json.json'
+			, required: useRussianUI
 		}, {
 			url: 'http://carnegieendowment.org/rss/solr/?fa=AppGlobalJson&lang=zh'
 			, name: '中文'
 			, type: 'json'
 			, filename: 'china-json.json'
+			, required: useChineseUI
 		}, {
 			url: 'http://carnegieendowment.org/rss/solr/?fa=AppGlobalJson&lang=ar'
 			, name: 'عربي'
 			, dir: 'rtl'
 			, type: 'json'
 			, filename: 'arabic-json.json'
+			, required: useArabicUI
 		}]
 	}, {
-		title: 'Global Centers'
+		title: toLocal(localStrings.globalCenters)
 		, feeds: [{
 			url: 'http://carnegieendowment.org/rss/solr/?fa=AppGlobalJson&center=beijing'
-			, name: 'Beijing'
+			, name: toLocal(localStrings.beijing)
 			, type: 'json'
 			, filename: 'beijing-json.json'
+			, required: useBeijingCenter
 		}, {
 			url: 'http://carnegieendowment.org/rss/solr/?fa=AppGlobalJson&center=beirut'
-			, name: 'Beirut'
+			, name: toLocal(localStrings.beirut)
 			, type: 'json'
 			, filename: 'beirut-json.json'
+			, required: useBeirutCenter
 		}, {
 			url: 'http://carnegieendowment.org/rss/solr/?fa=AppGlobalJson&center=brussels'
-			, name: 'Brussels'
+			, name: toLocal(localStrings.brussels)
 			, type: 'json'
 			, filename: 'brussels-json.json'
+			, required: useBrusselsCenter
 		}, {
 			url: 'http://carnegieendowment.org/rss/solr/?fa=AppGlobalJson&center=moscow'
-			, name: 'Moscow'
+			, name: toLocal(localStrings.moscow)
 			, type: 'json'
 			, filename: 'moscow-json.json'
+			, required: useMoscowCenter
 		}, {
 			url: 'http://carnegieendowment.org/rss/solr/?fa=AppGlobalJson&center=india'
-			, name: 'New Delhi'
+			, name: toLocal(localStrings.newDelhi)
 			, type: 'json'
 			, filename: 'newdelhi-json.json'
+			, required: useNewDelhiCenter
 		}, {
 			url: 'http://carnegieendowment.org/rss/solr/?fa=AppGlobalJson'
-			, name: 'Washington D.C.'
+			, name: toLocal(localStrings.washingtonDC)
 			, filename: 'mobile-global.json'
 			, type: 'json'
-			, required: true
+			, required: useDefaultFeeds
 		}]
 	}, {
-		title: 'Blogs'
+		title: toLocal(localStrings.blogs)
 		, links: [{
 			url: 'http://carnegieendowment.org/sada/'
 			, name: 'Sada'
@@ -336,54 +366,54 @@ module.exports = {
 			, name: 'Syria in Crisis'
 		}]
 	}, {
-		title: 'Global Resources'
+		title: toLocal(localStrings.resources)
 		, links: [{
 			url: 'http://carnegieendowment.org/topic/'
-			, name: 'Issues'
+			, name: toLocal(localStrings.issues)
 		}, {
 			url: 'http://carnegieendowment.org/regions/'
-			, name: 'Regions'
+			, name: toLocal(localStrings.regions)
 		}, {
 			url: 'http://carnegieendowment.org/experts/'
-			, name: 'Experts'
+			, name: toLocal(localStrings.experts)
 		}, {
 			url: 'http://carnegieendowment.org/publications/'
-			, name: 'Publications'
+			, name: toLocal(localStrings.publications)
 		}, {
 			url: 'http://carnegieendowment.org/events/'
-			, name: 'Events'
+			, name: toLocal(localStrings.events)
 		}, {
 			url: 'http://carnegieendowment.org/programs/'
-			, name: 'Programs'
+			, name: toLocal(localStrings.programs)
 		}, {
 			url: 'http://carnegieendowment.org/video/'
-			, name: 'Carnegie Video'
+			, name: toLocal(localStrings.carnegieVideo)
 		}, {
 			url: 'http://carnegieendowment.org/infographics'
-			, name: 'Infographics'
+			, name: toLocal(localStrings.infographics)
 		}]
 	}, {
-		title: 'Explore'
+		title: toLocal(localStrings.explore)
 		, links: [{
 			url: 'http://carnegieendowment.org/resources/?fa=register'
-			, name: 'Subscribe'
+			, name: toLocal(localStrings.subscribe)
 		}, {
 			url: 'http://carnegieendowment.org/about/'
-			, name: 'About Us'
+			, name: toLocal(localStrings.aboutUs)
 		}, {
 			url: 'http://carnegieendowment.org/about/development/'
-			, name: 'Support Carnegie'
+			, name: toLocal(localStrings.supportCarnegie)
 		}, {
 			url: 'http://carnegieendowment.org/about/?fa=contact'
-			, name: 'Help Desk'
+			, name: toLocal(localStrings.helpDesk)
 		}, {
 			url: 'http://carnegieendowment.org/about/index.cfm?fa=privacy'
-			, name: 'Privacy Statement'
+			, name: toLocal(localStrings.privacyStatement)
 		}]
 	}
 	]
 };
-},{}],3:[function(require,module,exports){
+},{"./analyticsConfig":2,"./ui/getLocalizedString":5,"./ui/localizedStrings":7}],4:[function(require,module,exports){
 module.exports = function () {
 	var config = require('./config')
 		, notify = require('../util/notify')
@@ -411,7 +441,22 @@ module.exports = function () {
 		doesFileExist(config.missingImage.split('/').pop()).then(init, getImage);
 	})
 }
-},{"../io/doesFileExist":15,"../io/downloadExternalFile":16,"../util/notify":30,"./config":2}],4:[function(require,module,exports){
+},{"../io/doesFileExist":18,"../io/downloadExternalFile":19,"../util/notify":34,"./config":3}],5:[function(require,module,exports){
+module.exports = function (options) {
+    if (options !== undefined) {
+        if (window.__languageForCarnegie === "ar" && options["ar"] !== undefined) {
+            return options["ar"];
+        } else if (window.__languageForCarnegie === "zh" && options["zh"] !== undefined) {
+            return options["zh"];
+        } else if (window.__languageForCarnegie === "ru" && options["ru"] !== undefined) {
+            return options["ru"];
+        } else if (options["en"] !== undefined) {
+            return options["en"];
+        }
+    }
+    return "XXXXXXXXXXXXXXXXXXXX"
+};
+},{}],6:[function(require,module,exports){
 /*global $, require, module */
 var story = require('./story');
 
@@ -525,20 +570,239 @@ module.exports = {
 	, showMenu: showMenu
 	, showStory: showStory
 };
-},{"./story":8}],5:[function(require,module,exports){
+},{"./story":11}],7:[function(require,module,exports){
+/**
+ * Created by kirk on 4/16/16.
+ */
+module.exports = {
+    "": {
+        en: "",
+        zh: "",
+        ar: "",
+        ru: ""
+    },
+    aboutUs: {
+        en: "About Us",
+        zh: "关于我们",
+        ar: "من نحن",
+        ru: "О нас"
+    },
+    arabic: {
+        en: "Arabic",
+        zh: "阿拉伯语",
+        ar: "عربي",
+        ru: "Арабский"
+    },
+    beijing: {
+        en: "Beijing",
+        zh: "北京",
+        ar: "بيجينغ",
+        ru: "Пекин"
+    },
+    beirut: {
+        en: "Beirut",
+        zh: "贝鲁特",
+        ar: "بيروت",
+        ru: "Бейрут"
+    },
+    blogs: {
+        en: "Blogs",
+        zh: "博客",
+        ar: "%%%%%%%%",
+        ru: "%%%%%%%%"
+    },
+    brussels: {
+        en: "Brussels",
+        zh: "布鲁塞尔",
+        ar: "بروكسل",
+        ru: "Брюссель"
+    },
+    carnegieVideo: {
+        en: "Carnegie Video",
+        zh: "卡内基视频",
+        ar: "%%%%%%%%",
+        ru: "Видео Карнеги"
+    },
+    chinese: {
+        en: "Chinese",
+        zh: "中文",
+        ar: "الصينية",
+        ru: "Китайский"
+    },
+    english: {
+        en: "English",
+        zh: "英语",
+        ar: "الانكليزية",
+        ru: "Английский"
+    },
+    events: {
+        en: "Events",
+        zh: "会议",
+        ar: "الأنشطة",
+        ru: "События"
+    },
+    experts: {
+        en: "Experts",
+        zh: "专家",
+        ar: "الباحثون",
+        ru: "Эксперты"
+    },
+    explore: {
+        en: "Explore",
+        zh: "发现更多",
+        ar: "%%%%%%%%",
+        ru: "%%%%%%%%"
+    },
+    globalCenters: {
+        en: "Global Centers",
+        zh: "国际中心",
+        ar: "المراكز في العالم",
+        ru: "Центры Карнеги в мире"
+    },
+    helpDesk: {
+        en: "Help Desk",
+        zh: "信息咨询",
+        ar: "%%%%%%%%",
+        ru: "%%%%%%%%"
+    },
+    infographics: {
+        en: "Infographics",
+        zh: "%%%%%%%%",
+        ar: "%%%%%%%%",
+        ru: "%%%%%%%%"
+    },
+    issues: {
+        en: "Issues",
+        zh: "主题",
+        ar: "القضايا",
+        ru: "Темы"
+    },
+    languages: {
+        en: "Languages",
+        zh: "语言",
+        ar: "اللغات",
+        ru: "Языки"
+    },
+    latestAnalysis: {
+        en: "Latest Analysis",
+        zh: "最新分析",
+        ar: "آخر التحليلات",
+        ru: "Недавние публикации"
+    },
+    moscow: {
+        en: "Moscow",
+        zh: "莫斯科",
+        ar: "موسكو",
+        ru: "Москва"
+    },
+    mostPopular: {
+        en: "Most Popular",
+        zh: "最受欢迎",
+        ar: "الأكثر قراءةً",
+        ru: "Самое популярное "
+    },
+    newDelhi: {
+        en: "New Delhi",
+        zh: "新德里",
+        ar: "نيو دلهي",
+        ru: "Дели"
+    },
+    notYetDownloaded: {
+        en: "Not yet downloaded",
+        zh: "还未下载",
+        ar: "%%%%%%%%",
+        ru: "%%%%%%%%"
+    },
+    privacyStatement: {
+        en: "Privacy Statement",
+        zh: "隐私声明",
+        ar: "بيان الخصوصية",
+        ru: "Обеспечение конфиденциальности"
+    },
+    programs: {
+        en: "Programs",
+        zh: "项目",
+        ar: "البرامج",
+        ru: "Программы"
+    },
+    publications: {
+        en: "Publications",
+        zh: "出版物",
+        ar: "الاصدارات",
+        ru: "Публикации"
+    },
+    readOffline: {
+        en: "Read offline",
+        zh: "离线阅读",
+        ar: "%%%%%%%%",
+        ru: "%%%%%%%%"
+    },
+    regions: {
+        en: "Regions",
+        zh: "地区",
+        ar: "المناطق",
+        ru: "Регионы"
+    },
+    resources: {
+        en: "Resources",
+        zh: "资源",
+        ar: "الموارد",
+        ru: "Ресурсы"
+    },
+    russian: {
+        en: "Russian",
+        zh: "俄语",
+        ar: "الروسية",
+        ru: "Русский"
+    },
+    subscribe: {
+        en: "Subscribe",
+        zh: "订阅",
+        ar: "تسجَّل",
+        ru: "Подписаться"
+    },
+    supportCarnegie: {
+        en: "Support Carnegie",
+        zh: "支持",
+        ar: "إدعم",
+        ru: "Поддержать"
+    },
+    updatedColon: {
+        en: "Updated: ",
+        zh: "更新日期 ",
+        ar: " %%%%%%%%",
+        ru: "%%%%%%%% "
+    },
+    washingtonDC: {
+        en: "Washington, D.C.",
+        zh: "华盛顿",
+        ar: "واشنطن",
+        ru: "Вашингтон"
+    }
+};
+},{}],8:[function(require,module,exports){
 /*global module, require, $*/
 
 var config = require('../config')
 	, notify = require('../../util/notify')
 	, access = require('../access')
 	, header = require('./header')
+	, getDate = require('../../util/date')
 	, storyList = require('./storyList')
 	, doesFileExist = require('../../io/doesFileExist')
 	, getFileContents = require('../../io/getFileContents')
+	, toLocal = require('./getLocalizedString')
+	, localStrings = require('./localizedStrings')
 	, primary = false;
 
 function friendlyDate (obj) {
-  return obj.friendlyPubDate !== undefined ? obj.friendlyPubDate : obj.lastBuildDate;
+	if (obj.lastBuildDate !== undefined) {
+		var localDate = getDate(obj.lastBuildDate);
+		if (localDate !== undefined) {
+			return localDate;
+		}
+	}
+    return obj.friendlyPubDate !== undefined ? obj.friendlyPubDate : obj.lastBuildDate;
 }
 
 (function init() {
@@ -571,7 +835,7 @@ function friendlyDate (obj) {
 				})
 				, sub = $('<div/>', {
 					addClass: 'sub'
-					, text: 'Not yet downloaded'
+					, text: toLocal(localStrings.notYetDownloaded)
 					, 'data-url': el.filename || el.url.split('/').pop().split('.').shift() + '.json'
 				})
 				, container = $('<div/>', {
@@ -598,7 +862,7 @@ function friendlyDate (obj) {
 				doesFileExist(filename).then(function () {
 					getFileContents(filename).then(function (contents) {
 						var obj = (JSON.parse(contents.target._result));
-						update(filename, 'Updated: ' + friendlyDate(obj));
+						update(filename, toLocal(localStrings.updatedColon) + friendlyDate(obj));
 						box.addClass('checked');
 					}, function (e){console.log(e)});
 				}, function (e){console.log(e)});
@@ -663,6 +927,7 @@ function friendlyDate (obj) {
 			, index = $('section.menu li').index($(this).closest('li'));
 		e.preventDefault();
 		if (navigator.connection.type !== 'none' || $check.hasClass('checked') || $check.hasClass('required')) {
+			updateHeaderCenterImage (index);
 			get(index, false, $(this));
 			$('section.menu li.active').removeClass('active');
 			$(e.currentTarget).closest('li').addClass('active');
@@ -684,9 +949,26 @@ function friendlyDate (obj) {
 		} else {
 			notify.alert(config.connectionMessage);
 		}
-	})
+	});
 
 }());
+
+function updateHeaderCenterImage (id) {
+	var classToAdd = access.getFilenameFromId(id).split(".").shift();
+	var classes = access.getFeedsFromConfig();
+	var header = $("header");
+
+	if (!header.hasClass(classToAdd)) {
+		for (var name in classes) {
+			if (classes.hasOwnProperty(name)) {
+				header.removeClass(classes[name].filename.split(".").shift());
+			}
+		}
+		if (classToAdd !== "mobile-global") {
+			header.addClass(classToAdd);
+		}
+	}
+}
 
 function update(filename, date) {
 	var items = $('section.menu .menu-item-box .sub[data-url="' + filename + '"]');
@@ -701,7 +983,7 @@ function get(id, loadOnly, $el) {
 	access.get(id, loadOnly).then(function (contents) {
 		var obj = (JSON.parse(contents.target._result));
 
-		update(filename, 'Updated: ' + friendlyDate(obj));
+		update(filename, toLocal(localStrings.updatedColon) + friendlyDate(obj));
 		if (!loadOnly) {
 			storyList.show(obj).then(function () {
         header.showStoryList();
@@ -743,13 +1025,13 @@ function remove(id) {
 }
 
 $(document).on('access.refresh', function (e, obj, filename) {
-  update(filename, 'Updated: ' + friendlyDate(obj));
+  update(filename, toLocal(localStrings.updatedColon) + friendlyDate(obj));
 });
 
 module.exports = {
 	update: update
 };
-},{"../../io/doesFileExist":15,"../../io/getFileContents":19,"../../util/notify":30,"../access":1,"../config":2,"./header":4,"./storyList":9}],6:[function(require,module,exports){
+},{"../../io/doesFileExist":18,"../../io/getFileContents":22,"../../util/date":32,"../../util/notify":34,"../access":1,"../config":3,"./getLocalizedString":5,"./header":6,"./localizedStrings":7,"./storyList":12}],9:[function(require,module,exports){
 var access = require('../access');
 
 Hammer.defaults.stop_browser_behavior.touchAction = 'pan-y';
@@ -984,7 +1266,7 @@ module.exports = {
 }
 
 
-},{"../access":1}],7:[function(require,module,exports){
+},{"../access":1}],10:[function(require,module,exports){
 module.exports = (function () {
   var win = $(window)
     , w = win.width()
@@ -994,7 +1276,7 @@ module.exports = (function () {
 	  $('body').addClass('tablet');
   }
 }());
-},{}],8:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 /*global module, require, $*/
 
 var config = require('../config')
@@ -1311,7 +1593,7 @@ function showAndUpdate(index) {
 module.exports = {
   show: show, next: next, previous: previous, hide: hideTextResize
 };
-},{"../../util/notify":30,"../access":1,"../config":2}],9:[function(require,module,exports){
+},{"../../util/notify":34,"../access":1,"../config":3}],12:[function(require,module,exports){
 /*global require, module, $*/
 var config = require('../config')
   , connection = require('../../util/connection')
@@ -1319,6 +1601,8 @@ var config = require('../config')
 	, notify = require('../../util/notify')
   , story = require('./story')
   , refresh = require('./refresh')
+    , toLocal = require('./getLocalizedString')
+    , localStrings = require('./localizedStrings')
 	, android = device.platform.toLowerCase() === 'android'
 	, version = device.version.split('.')
 	// allow iOS devices and Android devices 4.4 and up to have pull to refresh
@@ -1342,7 +1626,7 @@ function show(feedObj, forceActive) {
       }).append(message)
       , topBar = $('<div/>', {
         addClass: 'top-bar'
-        , text: 'Updated: ' + (feedObj.friendlyPubDate !== undefined ? feedObj.friendlyPubDate : feedObj.lastBuildDate)
+        , text: toLocal(localStrings.updatedColon) + (feedObj.friendlyPubDate !== undefined ? feedObj.friendlyPubDate : feedObj.lastBuildDate)
       })
       , ul = $('<ul/>', {})
       , container = $('<div/>', {
@@ -1443,7 +1727,7 @@ $(document).on('access.refresh', function (e, obj) {
 module.exports = {
 	show: show
 };
-},{"../../util/connection":28,"../../util/notify":30,"../config":2,"./header":4,"./refresh":6,"./story":8}],10:[function(require,module,exports){
+},{"../../util/connection":31,"../../util/notify":34,"../config":3,"./getLocalizedString":5,"./header":6,"./localizedStrings":7,"./refresh":9,"./story":11}],13:[function(require,module,exports){
 /*global module, require*/
 module.exports = function (res) {
 	var feedObject = {item:[]}
@@ -1473,7 +1757,7 @@ module.exports = function (res) {
 
   return feedObject;
 };
-},{}],11:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -1493,7 +1777,7 @@ module.exports = function (res) {
  * under the License.
  */
 
-var config = require('./app/config');
+var analyticsConfig = require('./app/analyticsConfig');
 
 module.exports = (function () {
 		document.addEventListener('deviceready', appReady, false);
@@ -1507,29 +1791,80 @@ module.exports = (function () {
 			//}, 6000)
 		}
 
+		function startApp () {
+			require('./init');
+		}
+
+		function getCountryCodeFromSim () {
+			window.plugins.carrier.getCarrierInfo(
+				function (data) {
+					var testing = false;
+					if (testing) {
+						window.__localCenter = "moscow"
+					} else
+					// only use SIM-based country lookup when no previous laguage override exists (English)
+					if (window.__languageForCarnegie === undefined && data && data["countryCode"] !== undefined) {
+						var cc = data["countryCode"];
+						var countries = {
+							moscow: ["RU", "UA", "BY", "MD", "AZ", "GE", "EE", "LV", "LT"],
+							beijing: ["CN", "HK", "MO", "SG", "TW", "JP", "KP", "KR", "MM", "LA", "TH", "KH", "VN", "MY", "PH", "ID"],
+							beirut: ["BH", "IR", "IQ", "IL", "JO", "LB", "PS", "SA", "SY", "TR", "AE", "YE", "DZ", "EG", "LY", "MR", "MA", "SD", "TN", "ML"],
+							brussels: ["FR", "DE", "GB", "IE", "ES", "PT", "BE", "NL", "DK", "NO", "SE", "FI", "PL", "CZ", "AT", "IT", "HU", "GR", "SK"],
+							newDelhi: ["IN", "PK", "AF", "BD", "NP", "LK"]
+						};
+						for (var key in countries) {
+							if (countries.hasOwnProperty(key)) {
+								if (countries[key].indexOf(cc) > -1) {
+									window.__localCenter = key
+								}
+							}
+						}
+					}
+					analytics.trackEvent('Country Code', 'Load', data && data['countryCode'] || "undefined", 10);
+					startApp()
+				}, function () {
+					analytics.trackEvent('Country Code', 'Fail', "No country code detected from SIM", 10);
+					startApp()
+				}
+			);
+		}
+
 		function appInit () {
 			$(function () {
-				if (config.track && analytics) {
-					analytics.startTrackerWithId(config.trackId);
+				if (analyticsConfig.track && analytics) {
+					analytics.startTrackerWithId(analyticsConfig.trackId);
 					analytics.trackEvent('Init', 'Load', 'App Started', 10);
 				}
+
 				navigator.globalization.getPreferredLanguage(
 					function (language) {
+						var body = $(window.document.body);
 						analytics.trackEvent('Language', 'Load', language.value, 10);
-						alert('language: ' + language.value + '\n');
-						require('./init');
+						if (language && language.value) {
+							if (language.value.indexOf("ar") > -1) {
+								window.__languageForCarnegie = "ar";
+								body.addClass('arabic-ui');
+							} else if (language.value.indexOf("ru") > -1) {
+								window.__languageForCarnegie = "ru";
+								body.addClass('russian-ui');
+							} else if (language.value.indexOf("zh") > -1) {
+								window.__languageForCarnegie = "zh";
+								body.addClass('chinese-ui');
+							}
+						}
+						getCountryCodeFromSim();
 					},
 					function () {
-						analytics.trackEvent('Language', 'Fail', language.value, 10);
-						alert('Error getting language\n');
-						require('./init');
+						alert("no language");
+						analytics.trackEvent('Language', 'Fail', "No preferred language detected", 10);
+						getCountryCodeFromSim();
 					}
 				);
 			});
 		}
 }());
 
-},{"./app/config":2,"./init":12}],12:[function(require,module,exports){
+},{"./app/analyticsConfig":2,"./init":15}],15:[function(require,module,exports){
 /*global module, require, $*/
 module.exports = (function () {
 	var access = require('./app/access')
@@ -1542,6 +1877,8 @@ module.exports = (function () {
 		, doesFileExist = require('./io/doesFileExist')
 		, downloadMissingImage = require('./app/downloadMissingImage')
 		, err = require('./util/err')
+		, toLocal = require('./app/ui/getLocalizedString')
+		, localStrings = require('./app/ui/localizedStrings')
 		, platform = device.platform.toLowerCase()
 		, android = device.platform.toLowerCase() === 'android'
 		, version = device.version.split('.')
@@ -1561,12 +1898,13 @@ module.exports = (function () {
 	}
 
 	function getFeed() {
-		access.get(0).then(function (contents) {
+		var defaultFeedID = getDefaultFeedID();
+		access.get(defaultFeedID).then(function (contents) {
 			var obj = (JSON.parse(contents.target._result))
-				, filename = access.getFilenameFromId(0)
+				, filename = access.getFilenameFromId(defaultFeedID)
 				, date = obj.friendlyPubDate || obj.lastBuildDate;
 
-			menu.update(filename, 'Updated: ' + date);
+			menu.update(filename, toLocal(localStrings.updatedColon) + date);
 			storyList.show(obj).then(function () {
 				header.showStoryList();
 
@@ -1585,9 +1923,20 @@ module.exports = (function () {
 			menu = require('./app/ui/menu');
 			getFeed();
 		}, err)
-	}, err)
+	}, err);
+
+
+	function getDefaultFeedID () {
+		var feedsArray = access.getFeedsFromConfig();
+		for (var i = 0; i < feedsArray.length; i += 1) {
+			if (feedsArray[i] && feedsArray[i].required) {
+				return i;
+			}
+		}
+		return 0;
+	}
 }());
-},{"./app/access":1,"./app/downloadMissingImage":3,"./app/ui/header":4,"./app/ui/menu":5,"./app/ui/responsive":7,"./app/ui/storyList":9,"./io/createDir":13,"./io/doesFileExist":15,"./util/connection":28,"./util/err":29,"./util/notify":30}],13:[function(require,module,exports){
+},{"./app/access":1,"./app/downloadMissingImage":4,"./app/ui/getLocalizedString":5,"./app/ui/header":6,"./app/ui/localizedStrings":7,"./app/ui/menu":8,"./app/ui/responsive":10,"./app/ui/storyList":12,"./io/createDir":16,"./io/doesFileExist":18,"./util/connection":31,"./util/err":33,"./util/notify":34}],16:[function(require,module,exports){
 var getFileSystem = require('./getFileSystem')
 	, getFile = require('./getFile')
 	, makeDir = require('./makeDir')
@@ -1605,7 +1954,7 @@ module.exports = function () {
 		}, reject);
 	})
 };
-},{"../app/config":2,"../util/notify":30,"./getFile":18,"./getFileSystem":22,"./makeDir":23}],14:[function(require,module,exports){
+},{"../app/config":3,"../util/notify":34,"./getFile":21,"./getFileSystem":25,"./makeDir":26}],17:[function(require,module,exports){
 /*global module, require*/
 var getFileSystem = require('./getFileSystem')
 	, getFile = require('./getFile')
@@ -1638,7 +1987,7 @@ module.exports = function (filename, contents) {
 		}, reject);
 	})
 };
-},{"./getFile":18,"./getFileEntry":20,"./getFileSystem":22,"./writeFile":27}],15:[function(require,module,exports){
+},{"./getFile":21,"./getFileEntry":23,"./getFileSystem":25,"./writeFile":30}],18:[function(require,module,exports){
 var getFileSystem = require('./getFileSystem')
 	, getFile = require('./getFile');
 
@@ -1649,7 +1998,7 @@ module.exports = function (filename) {
 		}, reject)
 	})
 }
-},{"./getFile":18,"./getFileSystem":22}],16:[function(require,module,exports){
+},{"./getFile":21,"./getFileSystem":25}],19:[function(require,module,exports){
 var config = require('../app/config')
 	, getFileSystem = require('./getFileSystem')
 	, getFile = require('./getFile')
@@ -1666,7 +2015,7 @@ module.exports = function (url) {
 		}) 
 	})
 }
-},{"../app/config":2,"./downloadFile":17,"./getFile":18,"./getFileSystem":22}],17:[function(require,module,exports){
+},{"../app/config":3,"./downloadFile":20,"./getFile":21,"./getFileSystem":25}],20:[function(require,module,exports){
 var config = require('../app/config');
 
 module.exports = function (fileentry, url) {
@@ -1686,7 +2035,7 @@ module.exports = function (fileentry, url) {
     fileTransfer.download(uri, path, resolve, catchErrors, false, {})
   });
 };
-},{"../app/config":2}],18:[function(require,module,exports){
+},{"../app/config":3}],21:[function(require,module,exports){
 var config = require('../app/config');
 
 module.exports = function (filesystem, filename, create) {
@@ -1695,7 +2044,7 @@ module.exports = function (filesystem, filename, create) {
 		fs.getFile(filename, {create: !!create, exclusive: false}, resolve, reject);
 	});
 }
-},{"../app/config":2}],19:[function(require,module,exports){
+},{"../app/config":3}],22:[function(require,module,exports){
 var getFileSystem = require('./getFileSystem')
   , getFile = require('./getFile')
   , readFile = require('./readFile');
@@ -1709,13 +2058,13 @@ module.exports = function (filename) {
     }, reject);
   })
 }
-},{"./getFile":18,"./getFileSystem":22,"./readFile":25}],20:[function(require,module,exports){
+},{"./getFile":21,"./getFileSystem":25,"./readFile":28}],23:[function(require,module,exports){
 module.exports = function (fileentry) {
 	return new Promise(function (resolve, reject) {
 		fileentry.createWriter(resolve, reject);
 	})
 };
-},{}],21:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 var getFileSystem = require('./getFileSystem')
   , readDirectory = require('./readDirectory');
 
@@ -1726,13 +2075,13 @@ module.exports = function (filename) {
     }, reject);
   })
 }
-},{"./getFileSystem":22,"./readDirectory":24}],22:[function(require,module,exports){
+},{"./getFileSystem":25,"./readDirectory":27}],25:[function(require,module,exports){
 module.exports = function () {
 	return new Promise(function (resolve, reject) {
 		window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, resolve, reject)
 	})
 };
-},{}],23:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 var config = require('../app/config');
 
 module.exports = function (filesystem, dirname) {
@@ -1741,7 +2090,7 @@ module.exports = function (filesystem, dirname) {
 		fileentry.getDirectory(dirname, {create: true, exclusive: false}, resolve, reject);
 	});
 }
-},{"../app/config":2}],24:[function(require,module,exports){
+},{"../app/config":3}],27:[function(require,module,exports){
 var config = require('../app/config');
 
 module.exports = function (filesystem) {
@@ -1752,7 +2101,7 @@ module.exports = function (filesystem) {
 		reader.readEntries(resolve, reject);
 	});
 }
-},{"../app/config":2}],25:[function(require,module,exports){
+},{"../app/config":3}],28:[function(require,module,exports){
 /*global module, require*/
 var removeFile = require('./removeFile');
 
@@ -1781,13 +2130,13 @@ module.exports = function (fileentry) {
 		})
 	});
 };
-},{"./removeFile":26}],26:[function(require,module,exports){
+},{"./removeFile":29}],29:[function(require,module,exports){
 module.exports = function (fileentry) {
     return new Promise(function (resolve, reject) {
         fileentry.remove(resolve, reject)
     });
 };
-},{}],27:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
 module.exports = function (filewriter, contents) {
   return new Promise(function (resolve, reject) {
     filewriter.onwriteend = resolve;
@@ -1797,7 +2146,7 @@ module.exports = function (filewriter, contents) {
 }
 
 
-},{}],28:[function(require,module,exports){
+},{}],31:[function(require,module,exports){
 /*global require, module, $*/
 var notify = require('./notify')
 	, config = require('../app/config');
@@ -1823,11 +2172,85 @@ module.exports = {
 	, offline: offline
 	, get: get
 };
-},{"../app/config":2,"./notify":30}],29:[function(require,module,exports){
+},{"../app/config":3,"./notify":34}],32:[function(require,module,exports){
+
+function getLocalDate (options) {
+    var year = options.year;
+    var month = options.month;
+    var date = options.date;
+
+    if (year !== undefined && month !== undefined && date !== undefined) {
+        if (window.__languageForCarnegie === "ar") {
+            return "" + year + ". " + month + ". " + date
+        } else if (window.__languageForCarnegie === "zh") {
+            return "" + year + "年" + months["zh"][month] + date + "日"
+        } else if (window.__languageForCarnegie === "ru") {
+            return "" + date + " " + months["ru"][month] + " " + year;
+        }
+    }
+    return void 0;
+}
+
+module.exports = function getStandardDateFromPubDate (pubDate) {
+    //var sample = "Fri, Apr 15 2016 8:58 AM EST";
+    if (pubDate !== undefined && pubDate.split !== undefined) {
+        var parts = pubDate.split(" ");
+        //alert(pubDate);
+        if (parts.length >= 5) {
+            var first = monthToInt(parts[1]) || parseInt(parts[1], 10);
+            var second = monthToInt(parts[2]) || parseInt(parts[2], 10);
+            var year = parseInt(parts[3], 10);
+            var hour = standardHour(parts[4], parts[5]);
+            var minute = parts[4].split(":").pop();
+            var month = parts[1].length > parts[2].length ? first : second;
+            var date = parts[1].length > parts[2].length ? second : first;
+            //alert("" + month + " " + date + " " + year + " " + hour + " " + minute);
+            //return new Date(Date.UTC(year, month, date, hour, minute));
+            return getLocalDate({year: year, month: month, date: date});
+        }
+    }
+    return void 0;
+};
+
+var months = {
+    ru: ["января","февраля","марта","апреля","мая","июня","июля","августа","сентября","октября","ноября","декабря"],
+    zh: ["1月","2月","3月","4月","5月","6月","7月","8月","9月","10月","11月","12月"],
+    ar: ["كانون الثاني/يناير","شباط/فبراير","آذار/مارس","نيسان/أبريل","أيار/مايو","حزيران/يونيو","تموز/يوليو","آب/أغسطس","أيلول/سبتمبر","تشرين الأول/أكتوبر","تشرين الأول/نوفمبر","كانون الأول/ديسمبر"],
+    en: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+};
+
+var days = {
+    ru: ["Воскресенье","Понедельник","Вторник","Среда","Четверг","Пятница","Суббота"],
+    zh: ["星期日","星期一","星期二","星期三","星期四","星期五","星期六"],
+    ar: ["الأحد","الاثنين","الثلثاء","الأربعاء","الخميس","الجمعة","السبت"],
+    en: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+};
+
+function monthToInt(month) {
+    var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    for (var i = 0; i < months.length; i += 1) {
+        if (month.indexOf(months[i]) > -1) {
+            return i
+        }
+    }
+    return void 0;
+}
+
+function standardHour (time, ampm) {
+    if (time !== undefined && ampm !== undefined) {
+        var hourInt = parseInt(time, 10);
+        var hour = ampm.toUpperCase() === "AM" ? hourInt : (hourInt + 12);
+        if (hour !== undefined && hour >= 0 && hour <= 23) {
+            return hour
+        }
+    }
+    return void 0;
+}
+},{}],33:[function(require,module,exports){
 module.exports = function (reason) {
 	console.log(reason);
 };
-},{}],30:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 var config = require('../app/config');
 
 function alert(message, callback, title, buttonLabel) {
@@ -1854,4 +2277,4 @@ module.exports = {
 	y: y,
 	n: n
 };
-},{"../app/config":2}]},{},[11]);
+},{"../app/config":3}]},{},[14]);

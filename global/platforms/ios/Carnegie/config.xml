@@ -47,6 +47,9 @@
         <param name="ios-package" value="CDVSplashScreen" />
         <param name="onload" value="true" />
     </feature>
+    <feature name="Carrier">
+        <param name="ios-package" value="Carrier" />
+    </feature>
     <icon height="180" src="res/ios/icon-60@3x.png" width="180" />
     <icon height="60" src="res/ios/icon-60.png" width="60" />
     <icon height="120" src="res/ios/icon-60@2x.png" width="120" />
@@ -85,7 +88,9 @@
     <preference name="auto-hide-splash-screen" value="false" />
     <preference name="fade-splash-screen" value="true" />
     <preference name="AutoHideSplashScreen" value="false" />
-    <preference name="SplashScreen" value="ic_launcher" />
+    <preference name="SplashScreen" value="screen" />
     <preference name="SplashScreenDelay" value="100000" />
+    <preference name="webviewbounce" value="false" />
+    <preference name="DisallowOverscroll" value="true" />
     <access origin="*" />
 </widget>

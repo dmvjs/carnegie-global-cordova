@@ -16,6 +16,8 @@
     <preference name="AutoHideSplashScreen" value="false" />
     <preference name="SplashScreen" value="screen" />
     <preference name="SplashScreenDelay" value="100000" />
+    <preference name="webviewbounce" value="false" />
+    <preference name="DisallowOverscroll" value="true" />
 
     <platform name="android">
         <icon src="res/android/ldpi.png" density="ldpi" />

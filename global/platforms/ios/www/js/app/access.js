@@ -98,7 +98,7 @@ function getImages(feedObject) {
   })
 }
 
-function getFeedFromConfig(id) {
+function getFeedsFromConfig () {
   var feeds = [];
   config.menu.forEach(function (item) {
     if (item.feeds) {
@@ -107,7 +107,11 @@ function getFeedFromConfig(id) {
       })
     }
   });
-  return feeds[id];
+  return feeds;
+}
+
+function getFeedFromConfig(id) {
+  return getFeedsFromConfig()[id];
 }
 
 function getFilenameFromFeed(feed) {
@@ -233,4 +237,5 @@ module.exports = {
   , getFilenameFromFeed: getFilenameFromFeed
   , removeFeed: removeFeed
   , refresh: refresh
+  , getFeedsFromConfig: getFeedsFromConfig
 };

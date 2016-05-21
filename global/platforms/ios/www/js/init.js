@@ -10,6 +10,8 @@ module.exports = (function () {
 		, doesFileExist = require('./io/doesFileExist')
 		, downloadMissingImage = require('./app/downloadMissingImage')
 		, err = require('./util/err')
+		, toLocal = require('./app/ui/getLocalizedString')
+		, localStrings = require('./app/ui/localizedStrings')
 		, platform = device.platform.toLowerCase()
 		, android = device.platform.toLowerCase() === 'android'
 		, version = device.version.split('.')
@@ -29,12 +31,13 @@ module.exports = (function () {
 	}
 
 	function getFeed() {
-		access.get(0).then(function (contents) {
+		var defaultFeedID = getDefaultFeedID();
+		access.get(defaultFeedID).then(function (contents) {
 			var obj = (JSON.parse(contents.target._result))
-				, filename = access.getFilenameFromId(0)
+				, filename = access.getFilenameFromId(defaultFeedID)
 				, date = obj.friendlyPubDate || obj.lastBuildDate;
 
-			menu.update(filename, 'Updated: ' + date);
+			menu.update(filename, toLocal(localStrings.updatedColon) + date);
 			storyList.show(obj).then(function () {
 				header.showStoryList();
 
@@ -53,5 +56,16 @@ module.exports = (function () {
 			menu = require('./app/ui/menu');
 			getFeed();
 		}, err)
-	}, err)
+	}, err);
+
+
+	function getDefaultFeedID () {
+		var feedsArray = access.getFeedsFromConfig();
+		for (var i = 0; i < feedsArray.length; i += 1) {
+			if (feedsArray[i] && feedsArray[i].required) {
+				return i;
+			}
+		}
+		return 0;
+	}
 }());
