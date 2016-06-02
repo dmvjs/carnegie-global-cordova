@@ -32,7 +32,7 @@ module.exports = (function () {
 		}
 
 		function startApp () {
-			require('./init');
+			//require('./init');
 		}
 
 		function getCountryCodeFromSim () {

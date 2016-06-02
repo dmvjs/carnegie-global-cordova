@@ -35,8 +35,8 @@ module.exports = {
     blogs: {
         en: "Blogs",
         zh: "博客",
-        ar: "%%%%%%%%",
-        ru: "%%%%%%%%"
+        ar: "مدوّنات",
+        ru: "Блог"
     },
     brussels: {
         en: "Brussels",
@@ -47,7 +47,7 @@ module.exports = {
     carnegieVideo: {
         en: "Carnegie Video",
         zh: "卡内基视频",
-        ar: "%%%%%%%%",
+        ar: "فيديو كارنيغي",
         ru: "Видео Карнеги"
     },
     chinese: {
@@ -77,8 +77,8 @@ module.exports = {
     explore: {
         en: "Explore",
         zh: "发现更多",
-        ar: "%%%%%%%%",
-        ru: "%%%%%%%%"
+        ar: "معلومات إضافية",
+        ru: "Меню"
     },
     globalCenters: {
         en: "Global Centers",
@@ -89,14 +89,14 @@ module.exports = {
     helpDesk: {
         en: "Help Desk",
         zh: "信息咨询",
-        ar: "%%%%%%%%",
-        ru: "%%%%%%%%"
+        ar: "مكتب المساعدة",
+        ru: "Служба поддержки"
     },
     infographics: {
         en: "Infographics",
-        zh: "%%%%%%%%",
-        ar: "%%%%%%%%",
-        ru: "%%%%%%%%"
+        zh: "信息图",
+        ar: "رسوم بيانية",
+        ru: "Инфографика"
     },
     issues: {
         en: "Issues",
@@ -137,8 +137,8 @@ module.exports = {
     notYetDownloaded: {
         en: "Not yet downloaded",
         zh: "还未下载",
-        ar: "%%%%%%%%",
-        ru: "%%%%%%%%"
+        ar: "لم يتم التنزيل بعد",
+        ru: "Загрузка не завершена"
     },
     privacyStatement: {
         en: "Privacy Statement",
@@ -161,8 +161,8 @@ module.exports = {
     readOffline: {
         en: "Read offline",
         zh: "离线阅读",
-        ar: "%%%%%%%%",
-        ru: "%%%%%%%%"
+        ar: "للقراءة خارج الإنترنت",
+        ru: "Читать офлайн"
     },
     regions: {
         en: "Regions",
@@ -197,8 +197,8 @@ module.exports = {
     updatedColon: {
         en: "Updated: ",
         zh: "更新日期 ",
-        ar: " %%%%%%%%",
-        ru: "%%%%%%%% "
+        ar: "تم التحديث في: ",
+        ru: "Обновлено "
     },
     washingtonDC: {
         en: "Washington, D.C.",
