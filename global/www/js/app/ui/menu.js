@@ -1,6 +1,7 @@
 /*global module, require, $*/
 
 var config = require('../config')
+	, menu = require('../config-menu')
 	, notify = require('../../util/notify')
 	, access = require('../access')
 	, header = require('./header')
@@ -27,7 +28,7 @@ function friendlyDate (obj) {
 		addClass: 'menu'
 	});
 
-	config.menu.forEach(function (obj) {
+	menu.forEach(function (obj) {
 		var feed = !!obj.feeds
 		, list = $('<ul/>', {
 				addClass: 'menu-items'

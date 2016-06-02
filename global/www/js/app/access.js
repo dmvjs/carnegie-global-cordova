@@ -1,6 +1,7 @@
 /*global require, module, $*/
 var notify = require('../util/notify')
   , config = require('./config')
+  , menu = require('./config-menu')
   , connection = require('../util/connection')
   , createFileWithContents = require('../io/createFileWithContents')
   , getFileContents = require('../io/getFileContents')
@@ -100,7 +101,7 @@ function getImages(feedObject) {
 
 function getFeedsFromConfig () {
   var feeds = [];
-  config.menu.forEach(function (item) {
+  menu.forEach(function (item) {
     if (item.feeds) {
       item.feeds.forEach(function (el) {
         feeds.push(el);

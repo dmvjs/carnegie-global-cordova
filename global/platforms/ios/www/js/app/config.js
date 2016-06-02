@@ -1,16 +1,7 @@
 /*global module, require*/
 var analyticsConfig = require('./analyticsConfig')
 	, toLocal = require('./ui/getLocalizedString')
-	, localStrings = require('./ui/localizedStrings')
-	, useDefaultFeeds = window.__languageForCarnegie === undefined && window.__localCenter === undefined
-	, useArabicUI = window.__languageForCarnegie === "ar"
-	, useChineseUI = window.__languageForCarnegie === "zh"
-	, useRussianUI = window.__languageForCarnegie === "ru"
-	, useMoscowCenter = window.__localCenter === "moscow"
-	, useBeijingCenter = window.__localCenter === "beijing"
-	, useBeirutCenter = window.__localCenter === "beirut"
-	, useBrusselsCenter = window.__localCenter === "brussels"
-	, useNewDelhiCenter = window.__localCenter === "newDelhi";
+	, localStrings = require('./ui/localizedStrings');
 
 module.exports = {
 	fs: void 0
@@ -23,7 +14,7 @@ module.exports = {
 	, menuMessage: toLocal(localStrings.notYetDownloaded)
 	, missingImage: 'http://carnegieendowment.org/app-img-not-avail.png'
 	, missingImageRef: void 0
-	, menu: [{
+	 /*menu: makeMenu()/*[{
 		title: ''
 		, sub: toLocal(localStrings.readOffline)
 		, feeds: [{
@@ -105,7 +96,7 @@ module.exports = {
 			, type: 'json'
 			, required: useDefaultFeeds
 		}]
-	}, {
+	}]/*, {
 		title: toLocal(localStrings.blogs)
 		, links: [{
 			url: 'http://carnegieendowment.org/sada/'
@@ -162,6 +153,5 @@ module.exports = {
 			url: 'http://carnegieendowment.org/about/index.cfm?fa=privacy'
 			, name: toLocal(localStrings.privacyStatement)
 		}]
-	}
-	]
+	}*/
 };
