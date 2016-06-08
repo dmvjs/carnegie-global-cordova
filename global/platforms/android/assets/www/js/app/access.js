@@ -1,6 +1,7 @@
 /*global require, module, $*/
 var notify = require('../util/notify')
   , config = require('./config')
+  , menu = require('./config-menu')
   , connection = require('../util/connection')
   , createFileWithContents = require('../io/createFileWithContents')
   , getFileContents = require('../io/getFileContents')
@@ -98,16 +99,20 @@ function getImages(feedObject) {
   })
 }
 
-function getFeedFromConfig(id) {
+function getFeedsFromConfig () {
   var feeds = [];
-  config.menu.forEach(function (item) {
+  menu.forEach(function (item) {
     if (item.feeds) {
       item.feeds.forEach(function (el) {
         feeds.push(el);
       })
     }
   });
-  return feeds[id];
+  return feeds;
+}
+
+function getFeedFromConfig(id) {
+  return getFeedsFromConfig()[id];
 }
 
 function getFilenameFromFeed(feed) {
@@ -161,6 +166,7 @@ function get(id) {
     } else {
       doesFileExist(filename).then(resolve, reject);
     }
+    removeOrphanedJSONFiles()
   })
 }
 
@@ -179,6 +185,31 @@ function isAnyCommentNew (o1, o2) {
     return updated;
 }
 
+function removeOrphanedJSONFiles() {
+  getFileList().then(function (response) {
+    var json = response.filter(function (element) {return element.name.split('.').pop() === 'json'})
+        , fileNames = json.map(function (element) {return element.name})
+        , filesInFeeds = getFeedsFromConfig().map(function (el) {return el.filename}),
+        filesToDelete = [];
+    fileNames.forEach(function (name) {
+      if (filesInFeeds.indexOf(name) === -1) {
+        filesToDelete.push(name);
+      }
+    });
+    filesToDelete.map(removeFeedByFilename);
+  });
+}
+
+function removeFeedByFilename(filename) {
+  return new Promise(function (resolve, reject) {
+    doesFileExist(filename).then(function (fileentry) {
+      removeFile(fileentry).then(function () {
+        removeOrphanedImages().then(resolve, reject);
+      }, reject)
+    }, reject);
+  })
+}
+
 function removeOrphanedImages() {
   return new Promise(function (resolve, reject) {
     var images = ['image-unavailable_605x328.png'];
@@ -193,7 +224,7 @@ function removeOrphanedImages() {
       Promise.all(
         filenames.map(getFileContents)
       ).then(function (res) {
-        var imagesToRemove = [];
+        var imagesToRemove;
         res.forEach(function (el) {
           var obj = (JSON.parse(el.target._result))
             , stories = obj.story ? obj.story : obj.item;
@@ -233,4 +264,5 @@ module.exports = {
   , getFilenameFromFeed: getFilenameFromFeed
   , removeFeed: removeFeed
   , refresh: refresh
+  , getFeedsFromConfig: getFeedsFromConfig
 };

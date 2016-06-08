@@ -3,6 +3,7 @@ module.exports = (function () {
 	var access = require('./app/access')
 		, responsive = require('./app/ui/responsive')
 		, connection = require('./util/connection')
+		, date = require('./util/date')
 		, createDir = require('./io/createDir')
 		, storyList = require('./app/ui/storyList')
 		, notify = require('./util/notify')
@@ -10,6 +11,8 @@ module.exports = (function () {
 		, doesFileExist = require('./io/doesFileExist')
 		, downloadMissingImage = require('./app/downloadMissingImage')
 		, err = require('./util/err')
+		, toLocal = require('./app/ui/getLocalizedString')
+		, localStrings = require('./app/ui/localizedStrings')
 		, platform = device.platform.toLowerCase()
 		, android = device.platform.toLowerCase() === 'android'
 		, version = device.version.split('.')
@@ -28,13 +31,15 @@ module.exports = (function () {
 		$('body').addClass('legacy');
 	}
 
-	function getFeed() {
-		access.get(0).then(function (contents) {
-			var obj = (JSON.parse(contents.target._result))
-				, filename = access.getFilenameFromId(0)
-				, date = obj.friendlyPubDate || obj.lastBuildDate;
+	header.setBackLabelText(toLocal(localStrings.back));
 
-			menu.update(filename, 'Updated: ' + date);
+	function getFeed() {
+		var defaultFeedID = getDefaultFeedID();
+		access.get(defaultFeedID).then(function (contents) {
+			var obj = (JSON.parse(contents.target._result))
+				, filename = access.getFilenameFromId(defaultFeedID);
+
+			menu.update(filename, toLocal(localStrings.updatedColon) + date.getFriendlyDate(obj));
 			storyList.show(obj).then(function () {
 				header.showStoryList();
 
@@ -43,8 +48,11 @@ module.exports = (function () {
 				}, timeout)
 			})
 		}, function () {
+			var message = toLocal(localStrings.processingErrorMessage);
+			var cancel = toLocal(localStrings.cancel);
+			var tryAgain = toLocal(localStrings.tryAgain);
 			analytics.trackEvent('Load', 'Error', 'JSON Parse Error', 10);
-			notify.confirm('There was an error processing the feed data. Try again in a few minutes.', getFeed, null, ['Try again', 'Cancel']);
+			notify.confirm(message, getFeed, null, [tryAgain, cancel]);
 		});
 	}
 
@@ -53,5 +61,16 @@ module.exports = (function () {
 			menu = require('./app/ui/menu');
 			getFeed();
 		}, err)
-	}, err)
+	}, err);
+
+
+	function getDefaultFeedID () {
+		var feedsArray = access.getFeedsFromConfig();
+		for (var i = 0; i < feedsArray.length; i += 1) {
+			if (feedsArray[i] && feedsArray[i].required) {
+				return i;
+			}
+		}
+		return 0;
+	}
 }());

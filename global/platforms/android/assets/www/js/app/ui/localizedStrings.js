@@ -20,6 +20,12 @@ module.exports = {
         ar: "عربي",
         ru: "Арабский"
     },
+    back: {
+        en: "Back",
+        zh: "返回",
+        ar: "رجوع",
+        ru: "Назад"
+    },
     beijing: {
         en: "Beijing",
         zh: "北京",
@@ -35,8 +41,8 @@ module.exports = {
     blogs: {
         en: "Blogs",
         zh: "博客",
-        ar: "%%%%%%%%",
-        ru: "%%%%%%%%"
+        ar: "مدوّنات",
+        ru: "Блог"
     },
     brussels: {
         en: "Brussels",
@@ -44,10 +50,16 @@ module.exports = {
         ar: "بروكسل",
         ru: "Брюссель"
     },
+    cancel: {
+        en: "Cancel",
+        zh: "取消",
+        ar: "إلغاء",
+        ru: "Отмена"
+    },
     carnegieVideo: {
         en: "Carnegie Video",
         zh: "卡内基视频",
-        ar: "%%%%%%%%",
+        ar: "فيديو كارنيغي",
         ru: "Видео Карнеги"
     },
     chinese: {
@@ -77,8 +89,8 @@ module.exports = {
     explore: {
         en: "Explore",
         zh: "发现更多",
-        ar: "%%%%%%%%",
-        ru: "%%%%%%%%"
+        ar: "معلومات إضافية",
+        ru: "Меню"
     },
     globalCenters: {
         en: "Global Centers",
@@ -89,8 +101,14 @@ module.exports = {
     helpDesk: {
         en: "Help Desk",
         zh: "信息咨询",
-        ar: "%%%%%%%%",
-        ru: "%%%%%%%%"
+        ar: "مكتب المساعدة",
+        ru: "Служба поддержки"
+    },
+    infographics: {
+        en: "Infographics",
+        zh: "信息图",
+        ar: "رسوم بيانية",
+        ru: "Инфографика"
     },
     issues: {
         en: "Issues",
@@ -128,17 +146,35 @@ module.exports = {
         ar: "نيو دلهي",
         ru: "Дели"
     },
+    noNetworkConnection: {
+        en: "No network connection detected",
+        zh: "未检测到网络连接",
+        ar: "الاتصال بشبكة الإنترنت غير متوفّر حاليّاً",
+        ru: "Нет соединения с сервером"
+    },
     notYetDownloaded: {
         en: "Not yet downloaded",
         zh: "还未下载",
-        ar: "%%%%%%%%",
-        ru: "%%%%%%%%"
+        ar: "لم يتم التنزيل بعد",
+        ru: "Загрузка не завершена"
+    },
+    ok: {
+        en: "OK",
+        zh: "好",
+        ar: "حسنا",
+        ru: "Xорошо"
     },
     privacyStatement: {
         en: "Privacy Statement",
         zh: "隐私声明",
         ar: "بيان الخصوصية",
         ru: "Обеспечение конфиденциальности"
+    },
+    processingErrorMessage: {
+        en: "There was an error processing the feed. Try again in a few minutes.",
+        zh: "处理错误。在几分钟后再试一次。",
+        ar: "خطأ معالجة. حاول مرة أخرى في بضع دقائق.",
+        ru: "Обработка ошибок. Повторите попытку через несколько минут."
     },
     programs: {
         en: "Programs",
@@ -155,8 +191,8 @@ module.exports = {
     readOffline: {
         en: "Read offline",
         zh: "离线阅读",
-        ar: "%%%%%%%%",
-        ru: "%%%%%%%%"
+        ar: "للقراءة خارج الإنترنت",
+        ru: "Читать офлайн"
     },
     regions: {
         en: "Regions",
@@ -188,11 +224,17 @@ module.exports = {
         ar: "إدعم",
         ru: "Поддержать"
     },
-    updated: {
-        en: "Updated:",
-        zh: "更新日期",
-        ar: "%%%%%%%%",
-        ru: "%%%%%%%%"
+    tryAgain: {
+        en: "Try again",
+        zh: "再试一次",
+        ar: "حاول ثانية",
+        ru: "Попробуй еще раз"
+    },
+    updatedColon: {
+        en: "Updated: ",
+        zh: "更新日期 ",
+        ar: "تم التحديث في: ",
+        ru: "Обновлено "
     },
     washingtonDC: {
         en: "Washington, D.C.",

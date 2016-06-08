@@ -10,7 +10,7 @@ module.exports = {
 	, trackId: analyticsConfig.trackId
 	, folder: 'com.ceip.carnegie'
 	, storyFontSize: 1.0
-	, connectionMessage: 'No network connection detected'
+	, connectionMessage: toLocal(localStrings.noNetworkConnection)
 	, menuMessage: toLocal(localStrings.notYetDownloaded)
 	, missingImage: 'http://carnegieendowment.org/app-img-not-avail.png'
 	, missingImageRef: void 0

@@ -32,6 +32,7 @@ module.exports = (function () {
 		}
 
 		function startApp () {
+			require('./app/history');
 			require('./init');
 		}
 

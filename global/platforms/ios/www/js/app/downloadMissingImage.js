@@ -2,7 +2,9 @@ module.exports = function () {
 	var config = require('./config')
 		, notify = require('../util/notify')
 		, doesFileExist = require('../io/doesFileExist')
-		, downloadExternalFile = require('../io/downloadExternalFile');
+		, downloadExternalFile = require('../io/downloadExternalFile')
+		, toLocal = require('./ui/getLocalizedString')
+		, localStrings = require('./ui/localizedStrings');
 
 	return new Promise(function (resolve, reject) {
 
@@ -18,7 +20,7 @@ module.exports = function () {
 			if (navigator.connection.type !== 'none') {
 				downloadExternalFile(config.missingImage).then(init, reject);
 			} else {
-				notify.alert(config.connectionMessage, getImage, null, 'Try again');
+				notify.alert(config.connectionMessage, getImage, null, toLocal(localStrings.tryAgain));
 			}
 		}
 

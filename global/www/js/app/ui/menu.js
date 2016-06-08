@@ -5,23 +5,13 @@ var config = require('../config')
 	, notify = require('../../util/notify')
 	, access = require('../access')
 	, header = require('./header')
-	, getDate = require('../../util/date')
+	, date = require('../../util/date')
 	, storyList = require('./storyList')
 	, doesFileExist = require('../../io/doesFileExist')
 	, getFileContents = require('../../io/getFileContents')
 	, toLocal = require('./getLocalizedString')
 	, localStrings = require('./localizedStrings')
 	, primary = false;
-
-function friendlyDate (obj) {
-	if (obj.lastBuildDate !== undefined) {
-		var localDate = getDate(obj.lastBuildDate);
-		if (localDate !== undefined) {
-			return localDate;
-		}
-	}
-    return obj.friendlyPubDate !== undefined ? obj.friendlyPubDate : obj.lastBuildDate;
-}
 
 (function init() {
 	var menuFragment = $('<section/>', {
@@ -80,7 +70,7 @@ function friendlyDate (obj) {
 				doesFileExist(filename).then(function () {
 					getFileContents(filename).then(function (contents) {
 						var obj = (JSON.parse(contents.target._result));
-						update(filename, toLocal(localStrings.updatedColon) + friendlyDate(obj));
+						update(filename, toLocal(localStrings.updatedColon) + date.getFriendlyDate(obj));
 						box.addClass('checked');
 					}, function (e){console.log(e)});
 				}, function (e){console.log(e)});
@@ -201,7 +191,7 @@ function get(id, loadOnly, $el) {
 	access.get(id, loadOnly).then(function (contents) {
 		var obj = (JSON.parse(contents.target._result));
 
-		update(filename, toLocal(localStrings.updatedColon) + friendlyDate(obj));
+		update(filename, toLocal(localStrings.updatedColon) + date.getFriendlyDate(obj));
 		if (!loadOnly) {
 			storyList.show(obj).then(function () {
         header.showStoryList();
@@ -213,8 +203,18 @@ function get(id, loadOnly, $el) {
 
 		analytics.trackEvent('Menu', 'Error', 'Feed Load Error: ' + access.getFilenameFromId(id), 10);
 		remove(id);
-		notify.alert('There was an error processing the ' + access.getFeedNameFromId(id) + ' feed');
+		notify.alert(getFeedError(toLocal(access.getFeedNameFromId(id)) || access.getFeedNameFromId(id), window.__languageForCarnegie || "en"));
 	});
+}
+
+function getFeedError (name, language) {
+	var error = {
+		"ar": name + "ثمة مشكلة في إظهار المحتوى "
+		, "ru": "Ошибка загрузки " + name
+		, "zh": "加载" + name + "项目出错"
+		, "en": 'There was an error processing the ' + name + ' feed'
+	};
+	return error[language] || error["en"];
 }
 
 function cleanup(id) {
@@ -243,7 +243,7 @@ function remove(id) {
 }
 
 $(document).on('access.refresh', function (e, obj, filename) {
-  update(filename, toLocal(localStrings.updatedColon) + friendlyDate(obj));
+  update(filename, toLocal(localStrings.updatedColon) + date.getFriendlyDate(obj));
 });
 
 module.exports = {

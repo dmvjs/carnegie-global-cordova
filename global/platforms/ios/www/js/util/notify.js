@@ -1,13 +1,19 @@
-var config = require('../app/config');
+var config = require('../app/config')
+	, toLocal = require('../app/ui/getLocalizedString')
+	, localStrings = require('../app/ui/localizedStrings');
 
 function alert(message, callback, title, buttonLabel) {
-	navigator.notification.alert(message, callback, title || config.appName, buttonLabel);
+	var ok = toLocal(localStrings.ok) || "OK";
+	navigator.notification.alert(message, callback, title || config.appName, buttonLabel || ok);
 }
 
 function confirm(message, callback, title, buttonLabels) {
 	//title: defaults to 'Confirm'
 	//buttonLabels: defaults to [OK, Cancel]
-	navigator.notification.confirm(message, callback, title || config.appName, buttonLabels);
+	var ok = toLocal(localStrings.ok) || "OK";
+	var cancel = toLocal(localStrings.cancel) || "Cancel";
+	var defaults = [ok, cancel];
+	navigator.notification.confirm(message, callback, title || config.appName, buttonLabels || defaults);
 }
 
 function y(message) {

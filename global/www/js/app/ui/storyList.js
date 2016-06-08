@@ -1,8 +1,10 @@
 /*global require, module, $*/
 var config = require('../config')
+    , access = require('../access')
   , connection = require('../../util/connection')
   , header = require('./header')
-	, notify = require('../../util/notify')
+  , notify = require('../../util/notify')
+    , date = require('../../util/date')
   , story = require('./story')
   , refresh = require('./refresh')
     , toLocal = require('./getLocalizedString')
@@ -18,6 +20,7 @@ function show(feedObj, forceActive) {
       , rtl = /[\u0600-\u06FF\u0750-\u077F]/.test(feedObj.title) || feedObj.title.toLowerCase().indexOf('arabic') > -1
       , fs = config.fs.toURL()
       , path = fs + (fs.substr(-1) === '/' ? '' : '/')
+        , feedConfig = access.getFeedsFromConfig()[access.getCurrentId()]
       , pullTop = $('<div/>', {
         id: 'pullrefresh-icon'
       })
@@ -30,7 +33,7 @@ function show(feedObj, forceActive) {
       }).append(message)
       , topBar = $('<div/>', {
         addClass: 'top-bar'
-        , text: toLocal(localStrings.updatedColon) + (feedObj.friendlyPubDate !== undefined ? feedObj.friendlyPubDate : feedObj.lastBuildDate)
+        , text: toLocal(localStrings.updatedColon, feedConfig.language) + date.getFriendlyDate(feedObj, feedConfig.language)
       })
       , ul = $('<ul/>', {})
       , container = $('<div/>', {
@@ -54,7 +57,7 @@ function show(feedObj, forceActive) {
         })
         , storyDate = $('<div/>', {
           addClass: 'story-date'
-          , text: element.publishDate || element.pubDate
+          , text: date.getStoryDate(element, feedConfig.language)
         })
         , storyText = $('<div/>', {
           addClass: 'story-text'

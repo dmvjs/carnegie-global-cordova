@@ -106,8 +106,13 @@ function showStory() {
 	show('.story');
 }
 
+function setBackLabelText (text) {
+	$('header .story .back .label').text(text);
+}
+
 module.exports = {
 	showStoryList: showStoryList
 	, showMenu: showMenu
 	, showStory: showStory
+	, setBackLabelText: setBackLabelText
 };

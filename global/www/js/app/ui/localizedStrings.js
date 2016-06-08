@@ -20,6 +20,12 @@ module.exports = {
         ar: "عربي",
         ru: "Арабский"
     },
+    back: {
+        en: "Back",
+        zh: "返回",
+        ar: "رجوع",
+        ru: "Назад"
+    },
     beijing: {
         en: "Beijing",
         zh: "北京",
@@ -43,6 +49,12 @@ module.exports = {
         zh: "布鲁塞尔",
         ar: "بروكسل",
         ru: "Брюссель"
+    },
+    cancel: {
+        en: "Cancel",
+        zh: "取消",
+        ar: "إلغاء",
+        ru: "Отмена"
     },
     carnegieVideo: {
         en: "Carnegie Video",
@@ -134,17 +146,35 @@ module.exports = {
         ar: "نيو دلهي",
         ru: "Дели"
     },
+    noNetworkConnection: {
+        en: "No network connection detected",
+        zh: "未检测到网络连接",
+        ar: "الاتصال بشبكة الإنترنت غير متوفّر حاليّاً",
+        ru: "Нет соединения с сервером"
+    },
     notYetDownloaded: {
         en: "Not yet downloaded",
         zh: "还未下载",
         ar: "لم يتم التنزيل بعد",
         ru: "Загрузка не завершена"
     },
+    ok: {
+        en: "OK",
+        zh: "好",
+        ar: "حسنا",
+        ru: "Xорошо"
+    },
     privacyStatement: {
         en: "Privacy Statement",
         zh: "隐私声明",
         ar: "بيان الخصوصية",
         ru: "Обеспечение конфиденциальности"
+    },
+    processingErrorMessage: {
+        en: "There was an error processing the feed. Try again in a few minutes.",
+        zh: "处理错误。在几分钟后再试一次。",
+        ar: "خطأ معالجة. حاول مرة أخرى في بضع دقائق.",
+        ru: "Обработка ошибок. Повторите попытку через несколько минут."
     },
     programs: {
         en: "Programs",
@@ -193,6 +223,12 @@ module.exports = {
         zh: "支持",
         ar: "إدعم",
         ru: "Поддержать"
+    },
+    tryAgain: {
+        en: "Try again",
+        zh: "再试一次",
+        ar: "حاول ثانية",
+        ru: "Попробуй еще раз"
     },
     updatedColon: {
         en: "Updated: ",

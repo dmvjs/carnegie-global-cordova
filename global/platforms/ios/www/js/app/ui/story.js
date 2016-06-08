@@ -3,6 +3,7 @@
 var config = require('../config')
 	, access = require('../access')
 	, notify = require('../../util/notify')
+    , date = require("../../util/date")
 	, share = ['ios', 'android', 'win32nt'].indexOf(device.platform.toLowerCase()) > -1
 	, browser = ['ios', 'android', 'blackberry 10', 'win32nt'].indexOf(device.platform.toLowerCase()) > -1
 	, $story = $('section.story')
@@ -203,6 +204,7 @@ function createPage(storyObj) {
     var fs = config.fs.toURL()
       , path = fs + (fs.substr(-1) === '/' ? '' : '/')
       , image = storyObj.image ? path + storyObj.image.split('/').pop() : config.missingImageRef.toURL()
+        , feedConfig = access.getFeedsFromConfig()[access.getCurrentId()]
       , topBar = $('<div/>', {
         addClass: 'top-bar', html: storyObj.docType || ''
       })
@@ -216,7 +218,7 @@ function createPage(storyObj) {
         addClass: 'story-author', text: storyObj.author || ''
       })
       , storyDate = $('<div/>', {
-        addClass: 'story-date', text: storyObj.publishDate || storyObj.pubDate || ''
+        addClass: 'story-date', text: date.getStoryDate(storyObj, feedConfig.language)
       })
       , storyMeta = $('<div/>', {
         addClass: 'story-meta'

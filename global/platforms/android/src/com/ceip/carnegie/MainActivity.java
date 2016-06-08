@@ -21,6 +21,7 @@ package com.ceip.carnegie;
 
 import android.os.Bundle;
 import org.apache.cordova.*;
+import android.content.pm.ActivityInfo;
 
 public class MainActivity extends CordovaActivity
 {
@@ -29,6 +30,9 @@ public class MainActivity extends CordovaActivity
     {
         super.onCreate(savedInstanceState);
         super.init();
+        if(getResources().getBoolean(R.bool.portrait_only)){
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
         // Set by <content src="index.html" /> in config.xml
         loadUrl(launchUrl);
     }

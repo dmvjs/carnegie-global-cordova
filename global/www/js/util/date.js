@@ -5,18 +5,88 @@ function getLocalDate (options) {
     var date = options.date;
 
     if (year !== undefined && month !== undefined && date !== undefined) {
+        if (options.language !== undefined) {
+            if (options.language === "ar") {
+                return getArabicDate(options)
+            } else if (options.language === "zh") {
+                return getChineseDate(options);
+            } else if (options.language === "ru") {
+                return getRussianDate(options);
+            } else if (options.language === "en") {
+                return void 0;
+            }
+        }
+
         if (window.__languageForCarnegie === "ar") {
-            return "" + year + ". " + month + ". " + date
+            return getArabicDate(options);
         } else if (window.__languageForCarnegie === "zh") {
-            return "" + year + "年" + months["zh"][month] + date + "日"
+            return getChineseDate(options);
         } else if (window.__languageForCarnegie === "ru") {
-            return "" + date + " " + months["ru"][month] + " " + year;
+            return getRussianDate(options);
         }
     }
     return void 0;
 }
 
-module.exports = function getStandardDateFromPubDate (pubDate) {
+function getArabicDate (options) {
+    var year = options.year;
+    var month = options.month;
+    var date = options.date;
+    return "" + date + " " + month + " " + year;
+}
+
+function getChineseDate (options) {
+    var year = options.year;
+    var month = options.month;
+    var date = options.date;
+    return "" + year + "年" + months["zh"][month] + date + "日";
+}
+
+function getRussianDate (options) {
+    var year = options.year;
+    var month = options.month;
+    var date = options.date;
+    return "" + date + " " + months["ru"][month] + " " + year;
+}
+
+function getStoryDate (obj, language) {
+    if (obj.pubDate !== undefined) {
+        var localDate;
+        if (language !== undefined) {
+            localDate = getStandardDateFromPubDate(obj.pubDate, language);
+        } else {
+            localDate = getStandardDateFromPubDate(obj.pubDate);
+        }
+        if (localDate !== undefined) {
+            return localDate;
+        }
+    }
+    return obj.publishDate || obj.pubDate;
+}
+
+function getFriendlyDate (obj, language) {
+    if (obj.lastBuildDate !== undefined) {
+        var localDate;
+        if (language !== undefined) {
+            localDate = getStandardDateFromPubDate(obj.lastBuildDate, language);
+        } else {
+            localDate = getStandardDateFromPubDate(obj.lastBuildDate);
+        }
+        if (localDate !== undefined) {
+            return localDate;
+        }
+    }
+    return obj.friendlyPubDate !== undefined ? obj.friendlyPubDate : obj.lastBuildDate;
+}
+
+module.exports = {
+    getStandardDateFromPubDate: getStandardDateFromPubDate
+    , getFriendlyDate: getFriendlyDate
+    , getStoryDate: getStoryDate
+};
+
+
+function getStandardDateFromPubDate (pubDate, language) {
     //var sample = "Fri, Apr 15 2016 8:58 AM EST";
     if (pubDate !== undefined && pubDate.split !== undefined) {
         var parts = pubDate.split(" ");
@@ -31,7 +101,7 @@ module.exports = function getStandardDateFromPubDate (pubDate) {
             var date = parts[1].length > parts[2].length ? second : first;
             //alert("" + month + " " + date + " " + year + " " + hour + " " + minute);
             //return new Date(Date.UTC(year, month, date, hour, minute));
-            return getLocalDate({year: year, month: month, date: date});
+            return getLocalDate({year: year, month: month, date: date, language: language});
         }
     }
     return void 0;

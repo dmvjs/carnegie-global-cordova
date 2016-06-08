@@ -84,6 +84,10 @@ html, body {
     background-color: #001c3d;
 }
 
+body.arabic-ui {
+    direction: rtl;
+}
+
 /* header styles */
 
 header {
@@ -97,7 +101,7 @@ header {
 }
 
 header.stay {
-    background-image: url('../img/header-main.png');
+    background-image: url('../img/header-story.png');
     background-size: auto 44px;
     background-repeat: no-repeat;
 }
@@ -109,10 +113,11 @@ header.stay {
 header .story-list,
 header .menu {
     height: 44px;
-    background: url('../img/header-main.png');
+    background: url('../img/header-story.png');
     background-color: #001c3d;
     background-size: auto 44px;
     background-repeat: no-repeat;
+    background-position: center;
 }
 
 .tablet header .story-list,
@@ -152,6 +157,15 @@ header .menu .show-menu {
     background-position: right;
     background-repeat: no-repeat;
     background-size: auto 44px;
+}
+
+.arabic-ui header .story-list .show-menu,
+.arabic-ui header .menu .show-menu {
+    float: left;
+    -moz-transform: scaleX(-1);
+    -o-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
 }
 
 .tablet header .story-list .show-menu,
@@ -201,6 +215,14 @@ header .menu .offline {
     display: none;
 }
 
+.arabic-ui header .menu .offline {
+    float: left;
+    -moz-transform: scaleX(-1);
+    -o-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+}
+
 .tablet header .menu .offline {
     height: 66px;
     width: 66px;
@@ -211,30 +233,71 @@ header .story .back {
     height: 44px;
     width: 100px;
     float: left;
-	background-image: url('../img/header-btn-story-back.png');
-	background-position: left;
+}
+
+header .story .back .arrow {
+    width: 40px;
+    height: 44px;
+    float: left;
+    display: inline-block;
+    background-image: url('../img/back-arrow.png');
+    background-position: left;
     background-repeat: no-repeat;
     background-size: auto 44px;
 }
 
-.tablet header .story .back {
+header .story .back .label {
+    width: 60px;
+    color: white;
+    height: 44px;
+    display: inline-block;
+    float: left;
+    line-height: 44px;
+}
+
+.tablet header .story .back .arrow {
     height: 66px;
     background-size: auto 66px;
 }
+.tablet header .story .back .label {
+    line-height: 66px;
+    background-size: auto 66px;
+    font-size: 2em;
+}
 
-header .story .back.active {
-    background-image: url('../img/header-btn-story-back-active.png');
+header .story .back.active .arrow {
+    background-image: url('../img/back-arrow-active.png');
+}
+
+header .story .back.active .label {
+    color: #0079ff;
+}
+
+.arabic-ui header .story .back {
+    float: right;
+}
+
+.arabic-ui header .story .back .arrow {
+    float: right;
+    -moz-transform: scaleX(-1);
+    -o-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
 }
 
 header .story .btn-group {
     height: 44px;
-    width: 100px;
+    width: 88px;
     float: right;
 }
 
 .tablet header .story .btn-group {
     height: 66px;
     width: 132px;
+}
+
+.arabic-ui header .story .btn-group {
+    float: left;
 }
 
 header .story .btn-group .previous,
@@ -265,6 +328,20 @@ header .story .btn-group .next {
     transform: scaleX(-1);
 }
 
+.arabic-ui header .story .btn-group .next {
+    -webkit-transform: scaleX(1);
+    transform: scaleX(1);
+}
+
+.arabic-ui header .story .btn-group .previous {
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+}
+.arabic-ui header .story .btn-group .previous,
+.arabic-ui header .story .btn-group .next {
+    float: left;
+}
+
 /* end of header styles */
 
 .container {
@@ -283,7 +360,7 @@ header .story .btn-group .next {
 
 .container section {
     position: absolute;
-    top: 0;
+    top: -1px;
     right: 0;
     bottom: 0;
     left: 0;
@@ -472,6 +549,28 @@ section.story-list li:first-of-type .story-image {
     margin: 0;
 }
 
+.arabic-ui section.menu .menu-item-box {
+    float: right;
+}
+
+.arabic-ui section.menu .menu-item-box .label,
+.arabic-ui section.menu .menu-item-box .sub {
+    margin-left: 0;
+    margin-right: 8px;
+}
+
+.arabic-ui section.menu .check {
+    float: left;
+}
+
+.arabic-ui section.menu .section-header .title {
+    float: right;
+}
+
+.arabic-ui section.menu .section-header .sub {
+    float: left;
+}
+
 section.story-list .story-image img {
     width: 100%;
 }
@@ -508,6 +607,11 @@ section.menu.active {
     transform: translate3d(0, 0, 0);
 }
 
+.tablet.arabic-ui section.menu {
+    -webkit-transform: translate3d(320px, 0, 0);
+    transform: translate3d(320px, 0, 0);
+}
+
 .android.legacy section.menu,
 .amazon-fireos section.menu {
     border-left: 1px solid #001c3d;
@@ -520,11 +624,11 @@ section.menu.active {
     transform: translate3d(-320px, 0, 0);
 }
 
-.tablet section.menu.active {
+.tablet.arabic-ui section.menu.active {
     -webkit-box-shadow: -4px 0 8px 0 rgba(0, 0, 0, 0.5);
     box-shadow: -4px 0 8px 0 rgba(0, 0, 0, 0.5);
-    -webkit-transform: translate3d(-320px, 0, 0);
-    transform: translate3d(-320px, 0, 0);
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
 }
 
 .android.legacy section.menu.active,
@@ -1373,6 +1477,31 @@ section.menu .checkrow select {
     border-top: 10px solid white;
     display: inline-block;
     margin-left: -30px;
+}
+
+div#accordion strong.heading {
+     width: 100%
+ }
+
+div#accordion strong.heading span {
+    background:url(http://carnegieendowment.org/img/sprite_master.png) no-repeat scroll -115px -565px #002F55;
+    color: #ffffff;
+    display:block;
+    font-weight:normal;
+    margin:1.5em 0;
+    padding:0.5em;
+    text-transform: uppercase;
+    width: 50%;
+}
+
+@media only screen and (max-device-width: 767px) {
+    div#accordion strong.heading span {
+        width: auto;
+    }
+}
+
+div#accordion strong.heading span.current span {
+    background-position: -415px -565px;
 }
 
 

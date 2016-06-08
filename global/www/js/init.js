@@ -3,6 +3,7 @@ module.exports = (function () {
 	var access = require('./app/access')
 		, responsive = require('./app/ui/responsive')
 		, connection = require('./util/connection')
+		, date = require('./util/date')
 		, createDir = require('./io/createDir')
 		, storyList = require('./app/ui/storyList')
 		, notify = require('./util/notify')
@@ -30,14 +31,15 @@ module.exports = (function () {
 		$('body').addClass('legacy');
 	}
 
+	header.setBackLabelText(toLocal(localStrings.back));
+
 	function getFeed() {
 		var defaultFeedID = getDefaultFeedID();
 		access.get(defaultFeedID).then(function (contents) {
 			var obj = (JSON.parse(contents.target._result))
-				, filename = access.getFilenameFromId(defaultFeedID)
-				, date = obj.friendlyPubDate || obj.lastBuildDate;
+				, filename = access.getFilenameFromId(defaultFeedID);
 
-			menu.update(filename, toLocal(localStrings.updatedColon) + date);
+			menu.update(filename, toLocal(localStrings.updatedColon) + date.getFriendlyDate(obj));
 			storyList.show(obj).then(function () {
 				header.showStoryList();
 
@@ -46,8 +48,11 @@ module.exports = (function () {
 				}, timeout)
 			})
 		}, function () {
+			var message = toLocal(localStrings.processingErrorMessage);
+			var cancel = toLocal(localStrings.cancel);
+			var tryAgain = toLocal(localStrings.tryAgain);
 			analytics.trackEvent('Load', 'Error', 'JSON Parse Error', 10);
-			notify.confirm('There was an error processing the feed data. Try again in a few minutes.', getFeed, null, ['Try again', 'Cancel']);
+			notify.confirm(message, getFeed, null, [tryAgain, cancel]);
 		});
 	}
 

@@ -1,9 +1,11 @@
 /*global module, require, $*/
 
 var config = require('../config')
+	, menu = require('../config-menu')
 	, notify = require('../../util/notify')
 	, access = require('../access')
 	, header = require('./header')
+	, date = require('../../util/date')
 	, storyList = require('./storyList')
 	, doesFileExist = require('../../io/doesFileExist')
 	, getFileContents = require('../../io/getFileContents')
@@ -11,16 +13,12 @@ var config = require('../config')
 	, localStrings = require('./localizedStrings')
 	, primary = false;
 
-function friendlyDate (obj) {
-    return obj.friendlyPubDate !== undefined ? obj.friendlyPubDate : obj.lastBuildDate;
-}
-
 (function init() {
 	var menuFragment = $('<section/>', {
 		addClass: 'menu'
 	});
 
-	config.menu.forEach(function (obj) {
+	menu.forEach(function (obj) {
 		var feed = !!obj.feeds
 		, list = $('<ul/>', {
 				addClass: 'menu-items'
@@ -72,7 +70,7 @@ function friendlyDate (obj) {
 				doesFileExist(filename).then(function () {
 					getFileContents(filename).then(function (contents) {
 						var obj = (JSON.parse(contents.target._result));
-						update(filename, toLocal(localStrings.updated) + " " + friendlyDate(obj));
+						update(filename, toLocal(localStrings.updatedColon) + date.getFriendlyDate(obj));
 						box.addClass('checked');
 					}, function (e){console.log(e)});
 				}, function (e){console.log(e)});
@@ -137,6 +135,7 @@ function friendlyDate (obj) {
 			, index = $('section.menu li').index($(this).closest('li'));
 		e.preventDefault();
 		if (navigator.connection.type !== 'none' || $check.hasClass('checked') || $check.hasClass('required')) {
+			updateHeaderCenterImage (index);
 			get(index, false, $(this));
 			$('section.menu li.active').removeClass('active');
 			$(e.currentTarget).closest('li').addClass('active');
@@ -158,9 +157,26 @@ function friendlyDate (obj) {
 		} else {
 			notify.alert(config.connectionMessage);
 		}
-	})
+	});
 
 }());
+
+function updateHeaderCenterImage (id) {
+	var classToAdd = access.getFilenameFromId(id).split(".").shift();
+	var classes = access.getFeedsFromConfig();
+	var header = $("header");
+
+	if (!header.hasClass(classToAdd)) {
+		for (var name in classes) {
+			if (classes.hasOwnProperty(name)) {
+				header.removeClass(classes[name].filename.split(".").shift());
+			}
+		}
+		if (classToAdd !== "mobile-global") {
+			header.addClass(classToAdd);
+		}
+	}
+}
 
 function update(filename, date) {
 	var items = $('section.menu .menu-item-box .sub[data-url="' + filename + '"]');
@@ -175,7 +191,7 @@ function get(id, loadOnly, $el) {
 	access.get(id, loadOnly).then(function (contents) {
 		var obj = (JSON.parse(contents.target._result));
 
-		update(filename, toLocal(localStrings.updated) + " " + friendlyDate(obj));
+		update(filename, toLocal(localStrings.updatedColon) + date.getFriendlyDate(obj));
 		if (!loadOnly) {
 			storyList.show(obj).then(function () {
         header.showStoryList();
@@ -187,8 +203,18 @@ function get(id, loadOnly, $el) {
 
 		analytics.trackEvent('Menu', 'Error', 'Feed Load Error: ' + access.getFilenameFromId(id), 10);
 		remove(id);
-		notify.alert('There was an error processing the ' + access.getFeedNameFromId(id) + ' feed');
+		notify.alert(getFeedError(toLocal(access.getFeedNameFromId(id)) || access.getFeedNameFromId(id), window.__languageForCarnegie || "en"));
 	});
+}
+
+function getFeedError (name, language) {
+	var error = {
+		"ar": name + "ثمة مشكلة في إظهار المحتوى "
+		, "ru": "Ошибка загрузки " + name
+		, "zh": "加载" + name + "项目出错"
+		, "en": 'There was an error processing the ' + name + ' feed'
+	};
+	return error[language] || error["en"];
 }
 
 function cleanup(id) {
@@ -217,7 +243,7 @@ function remove(id) {
 }
 
 $(document).on('access.refresh', function (e, obj, filename) {
-  update(filename, toLocal(localStrings.updated) + " " + friendlyDate(obj));
+  update(filename, toLocal(localStrings.updatedColon) + date.getFriendlyDate(obj));
 });
 
 module.exports = {
